@@ -1,0 +1,102 @@
+.sticky-parent {
+    height: 200vh;
+    /*margin-bottom: 75vh;*/
+}
+
+.landing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    height: 100vh;
+
+    /*top: 0;*/
+    left: 0;
+    right: 0;
+    position: fixed;
+}
+
+.landing div {
+    display: flex;
+
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+    /*transition-property: transform;*/
+    /*transition-duration: 400ms;*/
+    /*transition-timing-function: ease-in-out;*/
+}
+
+.landing img {
+    width: clamp(15.5rem, 46.5vw, 43rem);
+}
+
+.landing p {
+    display: flex;
+    flex-direction: column;
+
+    font-family: var(--font-dmsans);
+    font-size: clamp(0.7rem, 2.7vw, 2.7rem);
+    font-weight: 500;
+    line-height: clamp(0.7rem, 2.7vw, 2.7rem);
+
+    margin-left: clamp(0.5rem, 2vw, 2rem);
+}
+
+.landing span {
+    color: rgb(var(--clr-dark-blue), 1);
+    transition-property: margin-top, margin-bottom;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+    /*animation-delay: 400ms;*/
+    /*animation-timing-function: ease;*/
+    /*animation-name: fadeUp;*/
+}
+
+.landing span[data-motion="fade-out"] {
+    /*background-color: blue;*/
+    animation: fade-up 400ms forwards ease;
+}
+
+.landing span[data-motion="fade-back"] {
+    /*background-color: blue;*/
+    animation: fade-back 400ms forwards ease;
+}
+
+.landing span:hover {
+    margin-block: 5px;
+}
+
+.logo {
+
+}
+
+.test {
+    height: 1000px;
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+}
+
+@keyframes fade-back {
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+}
+
+
