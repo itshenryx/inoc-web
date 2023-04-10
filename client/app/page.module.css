@@ -4,29 +4,79 @@
 }
 
 .landing {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
     align-content: center;
 
     height: 100vh;
 
-    /*top: 0;*/
+    top: 0;
     left: 0;
     right: 0;
-    position: fixed;
+    position: sticky;
 }
 
-.landing div {
+.logo-box {
     display: flex;
 
     justify-content: center;
     align-content: center;
     align-items: center;
 
+    transform-origin: center center;
     /*transition-property: transform;*/
     /*transition-duration: 400ms;*/
-    /*transition-timing-function: ease-in-out;*/
+    grid-area: 1/1;
+    place-items: center;/*transition-timing-function: ease-in-out;*/
+
+}
+
+.mask {
+    --mask-image: radial-gradient(140% 140% at top right, black 50%, transparent calc(50% + 2px));
+    -webkit-mask-image: var(--mask-image);
+    mask-image: var(--mask-image);
+    background-color: #cd7776;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    grid-area: 1/1;
+    place-items: center;
+}
+
+.grid-box {
+    top: 0;
+    position: sticky;
+    display: grid;
+}
+
+.circle {
+    border-radius: 50%;
+    background-color: rgb(205, 119, 118);
+    box-shadow: 0px 0px 250px 0px rgba(205, 119, 118, 0.56);
+    position: absolute;
+    display: flex;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: -50vh;
+    width: 50vw;
+    height: 50vw;
+    z-index: 5;
+
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.circle .logo-box{
+    transform-origin: center center;
+    position: absolute;
 }
 
 .landing img {
@@ -40,7 +90,7 @@
     font-family: var(--font-dmsans);
     font-size: clamp(0.7rem, 2.7vw, 2.7rem);
     font-weight: 500;
-    line-height: clamp(0.7rem, 2.7vw, 2.7rem);
+    line-height: clamp(0.9rem, 2.9vw, 2.9rem);
 
     margin-left: clamp(0.5rem, 2vw, 2rem);
 }
@@ -53,6 +103,10 @@
     /*animation-delay: 400ms;*/
     /*animation-timing-function: ease;*/
     /*animation-name: fadeUp;*/
+}
+
+.mask span {
+    color: rgb(var(--clr-gray));
 }
 
 .landing span[data-motion="fade-out"] {
