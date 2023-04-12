@@ -18,7 +18,6 @@ export default function Form() {
         try {
             const user = await createUserWithEmailAndPassword(
                 auth, event.target.email.value, event.target.password.value);
-            console.log(user);
         } catch (err) {
             console.log(err);
         }

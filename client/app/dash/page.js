@@ -5,7 +5,6 @@ import {signOut, onAuthStateChanged} from "firebase/auth";
 import {auth} from '@/app/firebase-config';
 import {useRouter} from "next/navigation";
 
-
 export default function Dashboard() {
     const router = useRouter();
 
@@ -19,7 +18,7 @@ export default function Dashboard() {
     }
 
     return (
-        auth.currentUser == null ? <></> :
+        auth.currentUser === null ? <></> :
         <main className={s.main}>
             <button onClick={logout}>
                 Sign out
