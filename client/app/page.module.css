@@ -28,7 +28,7 @@
     /*transition-property: transform;*/
     /*transition-duration: 400ms;*/
     grid-area: 1/1;
-    place-items: center;/*transition-timing-function: ease-in-out;*/
+    place-items: center; /*transition-timing-function: ease-in-out;*/
 
 }
 
@@ -74,7 +74,7 @@
     overflow: hidden;
 }
 
-.circle .logo-box{
+.circle .logo-box {
     transform-origin: center center;
     position: absolute;
 }

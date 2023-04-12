@@ -1,9 +1,8 @@
 import s from './page.module.css'
+import Form from "@/app/signup/form";
 import Link from "next/link";
-import Form from "@/app/signin/form";
 
-export default function Signin() {
-
+export default function Signup() {
     return (
         <main className={s.main}>
             <div className={s["info-pane"]}>
@@ -15,7 +14,7 @@ export default function Signin() {
             </div>
             <div className={s["signin-pane"]}>
                 <p draggable="false">
-                    Don't have an account? <Link href="/signup">Contact us</Link>
+                    Already have an account? <Link href="/signin">Sign in</Link>
                 </p>
                 <Form/>
             </div>

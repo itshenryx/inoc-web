@@ -1,0 +1,21 @@
+.main {
+    width: 100vw;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.main button {
+    font-family: var(--font-dmsans);
+    font-size: 1.2rem;
+    cursor: pointer;
+
+    padding: 1rem;
+    border: none;
+    border-radius: 1rem;
+    color: rgb(var(--clr-gray));
+    background-color: rgb(var(--clr-dark-pink));
+}
