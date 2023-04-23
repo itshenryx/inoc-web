@@ -5,6 +5,7 @@ import s from './page.module.css';
 import OtpInput from 'react-otp-input';
 import cryptico from "cryptico";
 import {useState, useEffect} from "react";
+import {useKeyContext} from "@/context/keys";
 
 
 // import CryptoJS from 'crypto-js';
@@ -48,18 +49,22 @@ import {useState, useEffect} from "react";
 //     };
 // };
 
-export default function Key({setPrivateKey, publicKey, uid}) {
+export default function Key({setPrivateKey, publicKey, uid, patient}) {
     const [key, setKey] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [wrong, setWrong] = useState("false");
+
+    const [keys, setKeys] = useKeyContext();
 
     useEffect(() => {
         if (key.length === 6) {
             setDisabled(true);
             const privateKey = cryptico.generateRSAKey(key + uid, 1024);
             const generatedPublicKey = cryptico.publicKeyString(privateKey);
-            if (publicKey === generatedPublicKey)
+            if (publicKey === generatedPublicKey) {
+                setKeys({publicKey: generatedPublicKey, privateKey: privateKey, patient: patient});
                 setPrivateKey(privateKey);
+            }
             else
                 setWrong("true");
             setTimeout(() => {

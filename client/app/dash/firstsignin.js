@@ -7,7 +7,7 @@ import OtpInput from 'react-otp-input';
 import {collection, addDoc} from 'firebase/firestore';
 import {db} from '@/app/firebase-config';
 import cryptico from "cryptico";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 
 export default function Firstsignin({setFirstSignIn, uid}) {
     const [key, setKey] = useState("");
@@ -20,7 +20,7 @@ export default function Firstsignin({setFirstSignIn, uid}) {
             await addDoc(collection(db, "users"), {
                 uid: uid,
                 publickey: publicKey,
-                patient:isPatient,
+                patient: isPatient,
             });
             setFirstSignIn(false);
         } catch (e) {

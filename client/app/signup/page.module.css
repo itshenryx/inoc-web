@@ -259,7 +259,7 @@
     color: rgb(var(--clr-dark-blue));
     border-radius: 1rem;
 
-    box-shadow: 0px 0px 81px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 81px 0px rgba(0, 0, 0, 0.1);
     /*border: 1px solid rgb(var(--clr-peach));*/
     padding: 1rem;
     align-items: center;
@@ -277,7 +277,7 @@
     align-content: center;
 }
 
-.ToastTitle svg{
+.ToastTitle svg {
     font-weight: bold;
     width: 2rem;
     /*margin-right: 1rem;*/
@@ -290,9 +290,11 @@
 .ToastRoot[data-state='open'] {
     animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .ToastRoot[data-state='closed'] {
     animation: hide 100ms ease-in;
 }
+
 .ToastRoot[data-swipe='end'] {
     animation: swipeOut 100ms ease-out;
 }
