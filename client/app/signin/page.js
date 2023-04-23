@@ -3,7 +3,6 @@ import Link from "next/link";
 import Form from "@/app/signin/form";
 
 export default function Signin() {
-
     return (
         <main className={s.main}>
             <div className={s["info-pane"]}>
