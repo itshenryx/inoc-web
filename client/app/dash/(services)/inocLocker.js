@@ -1,6 +1,12 @@
+"use client";
+
 import s from '../page.module.css';
+import Upload from "@/app/dash/upload";
+import {useState} from "react";
 
 export default function InocLocker() {
+    const [uploader, setUploader] = useState(false);
+
     return (
         <div className={s["il-container"]}>
             <div className={s["il-header"]}>
@@ -9,16 +15,16 @@ export default function InocLocker() {
                     <span>Securely store and share your documents</span>
                 </p>
                 <div className={s["il-buttons"]}>
-                    <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                            <path fillRule="evenodd" d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.379a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H4.5a3 3 0 00-3 3v12a3 3 0 003 3h15zm-6.75-10.5a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V10.5z" clipRule="evenodd" />
+                    <button onClick={() => setUploader(true)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.2} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         UPLOAD FILES
                     </button>
                 </div>
             </div>
             <div className={s["il-body"]}>
-
+                <Upload uploader={uploader} setUploader={setUploader}/>
             </div>
         </div>
     );

@@ -19,8 +19,8 @@ async function fetchPublicKey(uid, setFirstSignIn) {
 export default function DashLayout({children}) {
     const router = useRouter();
     const [user, setUser] = useState({});
-    const [publicKey, setPublicKey] = useState("");
-    const [privateKey, setPrivateKey] = useState("");
+    const [publicKey, setPublicKey] = useState();
+    const [privateKey, setPrivateKey] = useState();
     const [firstSignIn, setFirstSignIn] = useState(false);
     const [patient, setPatient] = useState(false);
 
@@ -50,8 +50,7 @@ export default function DashLayout({children}) {
             <KeyProvider>
                 <main className={s.main}>
                     {children}
-                    {/*<Key getPin={getPin} setGetPin={setGetPin}/>*/}
-                    {privateKey === "" && <Key
+                    {privateKey === undefined && <Key
                         setPrivateKey={setPrivateKey}
                         publicKey={publicKey}
                         uid={auth.currentUser.uid}

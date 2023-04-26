@@ -5,7 +5,7 @@ import * as RadioGroup from '@radix-ui/react-radio-group';
 import s from './page.module.css';
 import OtpInput from 'react-otp-input';
 import {collection, addDoc} from 'firebase/firestore';
-import {db} from '@/app/firebase-config';
+import {auth,db} from '@/app/firebase-config';
 import cryptico from "cryptico";
 import {useState} from "react";
 
@@ -21,6 +21,7 @@ export default function Firstsignin({setFirstSignIn, uid}) {
                 uid: uid,
                 publickey: publicKey,
                 patient: isPatient,
+                email: auth.currentUser.email,
             });
             setFirstSignIn(false);
         } catch (e) {
