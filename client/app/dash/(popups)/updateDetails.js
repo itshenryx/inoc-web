@@ -5,33 +5,44 @@ import * as RadioGroup from '@radix-ui/react-radio-group';
 import * as Select from '@radix-ui/react-select';
 import s from '../page.module.css';
 import OtpInput from 'react-otp-input';
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, setDoc, getDocs, where, query, doc} from 'firebase/firestore';
 import {auth, db} from '@/app/firebase-config';
 import cryptico from "cryptico";
 import {useEffect, useState} from "react";
+import {useUserContext} from "@/context/user";
+import {useKeyContext} from "@/context/keys";
+import {useRouter} from "next/navigation";
 
-export default function Firstsignin({setFirstSignIn, uid}) {
+export default function UpdateDetails({changeDetails, setChangeDetails}) {
     const [key, setKey] = useState("");
-    const [isPatient, setIsPatient] = useState(true);
-    const [name, setName] = useState(undefined);
-    const [number, setNumber] = useState(undefined);
-    const [age, setAge] = useState(undefined);
-    const [gender, setGender] = useState(undefined);
-    const [blood, setBlood] = useState(undefined);
-    const [address, setAddress] = useState(undefined);
+    const [user, _] = useUserContext();
+    const [keys, __] = useKeyContext();
+    const [name, setName] = useState(user.name);
+    const [number, setNumber] = useState(user.number);
+    const [age, setAge] = useState(user.age);
+    const [gender, setGender] = useState(user.gender);
+    const [blood, setBlood] = useState(user.blood);
+    const [address, setAddress] = useState(user.address);
+
     const [valid, setValid] = useState(false);
+    const [validKey, setValidKey] = useState(false);
+    const router = useRouter();
 
     const handleSubmit = async () => {
-        const pKey = cryptico.generateRSAKey(key + uid, 1024);
+        const pKey = cryptico.generateRSAKey(key + user.uid, 1024);
         const publicKey = cryptico.publicKeyString(pKey);
         const eNumber = cryptico.encrypt(number, publicKey);
         const eAddress = cryptico.encrypt(address, publicKey);
-
         try {
-            await addDoc(collection(db, "users"), {
-                uid: uid,
+            const q = await getDocs(query(collection(db, "users"), where("uid", "==", user.uid)));
+            let id;
+            q.forEach((doc) => {
+                id = doc.id;
+            });
+            await setDoc(doc(db, "users", id), {
+                uid: user.uid,
                 publickey: publicKey,
-                patient: isPatient,
+                patient: user.patient,
                 email: auth.currentUser.email,
                 name: name,
                 number: eNumber.cipher,
@@ -40,21 +51,33 @@ export default function Firstsignin({setFirstSignIn, uid}) {
                 blood: blood,
                 address: eAddress.cipher,
             });
-            setFirstSignIn(false);
+            window.location.reload();
         } catch (e) {
             console.log(e);
         }
     };
 
-    useEffect(() =>{
+    useEffect(() => {
         if (name !== undefined &&
-           (number !== undefined && number.length === 10) &&
+            (number !== undefined && number.length === 10) &&
             age !== undefined &&
             gender !== undefined &&
-            blood !== undefined  &&
+            blood !== undefined &&
             address !== undefined
-        )  setValid(true);
-    }, [name,number,age,gender,blood,address,valid]);
+        ) setValid(true);
+    }, [name, number, age, gender, blood, address, valid]);
+
+    useEffect(() => {
+        if (key.length === 6) {
+            const passPhrase = key.toString() + user.uid.toString();
+            const privateKey = cryptico.generateRSAKey(passPhrase, 1024);
+            const publicKey = cryptico.publicKeyString(privateKey);
+            if (publicKey === keys.publicKey) setValidKey(true);
+            else setKey("");
+        } else {
+            setValidKey(false);
+        }
+    }, [key]);
 
     const handleName = e => {
         const fixed = e.target.value.replace(/[^a-zA-Z\s]/g, "");
@@ -91,40 +114,25 @@ export default function Firstsignin({setFirstSignIn, uid}) {
             <AlertDialog.Portal>
                 <AlertDialog.Overlay className={s.AlertDialogOverlay}/>
                 <AlertDialog.Content className={s.AlertDialogContent}>
-                    <AlertDialog.Title className={s.AlertDialogTitle}>Set Personal Details & PIN</AlertDialog.Title>
+                    <AlertDialog.Title className={s.AlertDialogTitle}>Update Personal Details</AlertDialog.Title>
                     <AlertDialog.Description className={s.AlertDialogDescription}>
                         <div className={s.separator}></div>
-                        <p>Enter important personal details and Choose your account type. These details will be stored securely
-                            using your PIN.</p>
-
-                        <RadioGroup.Root className={s.RadioGroupRoot}
-                                         defaultValue={"patient"}
-                                         onValueChange={() => {
-                                             setIsPatient(!isPatient);
-                                         }}>
-                            <RadioGroup.Item value={"patient"} className={s.RadioGroupItem}>
-                                <RadioGroup.Indicator className={s.RadioGroupIndicator}/>
-                                <label>Patient</label>
-                            </RadioGroup.Item>
-                            <RadioGroup.Item value={"doctor"} className={s.RadioGroupItem}>
-                                <RadioGroup.Indicator className={s.RadioGroupIndicator}/>
-                                <label>Doctor</label>
-                            </RadioGroup.Item>
-                        </RadioGroup.Root>
-
+                        <p>Change and update the personal details you would like to update.<br/><br/></p>
                         <div className={s["detail-box"]}>
                             <div className={s["detail-input"]}>
-                                <input type="text" placeholder={"Full Name"} onChange={handleName} required/>
+                                <input type="text" placeholder={"Full Name"} defaultValue={name} onChange={handleName} required/>
                             </div>
                             <div className={s["detail-input"]} data-value={"number"}>
                                 <span>+91</span>
-                                <input type="tel" placeholder={"Number"} onChange={handleNumber} maxLength="10" required/>
+                                <input type="tel" placeholder={"Number"} defaultValue={number} onChange={handleNumber}
+                                       maxLength="10" required/>
                             </div>
                         </div>
 
                         <div className={s["detail-grid"]}>
                             <div className={s["detail-input"]} data-value={"age"}>
-                                <input type="tel" placeholder={"Age"} maxLength="2" onChange={handleAge} required/>
+                                <input type="tel" placeholder={"Age"} maxLength="2" defaultValue={age} onChange={handleAge}
+                                       required/>
                             </div>
                             <Select.Root value={blood} onValueChange={handleBlood}>
                                 <Select.Trigger className={s.SelectTrigger}>
@@ -184,11 +192,11 @@ export default function Firstsignin({setFirstSignIn, uid}) {
                             </Select.Root>
                         </div>
                         <div className={s["detail-input"]}>
-                            <input type="text" placeholder={"Address"} onChange={handleAddress} required/>
+                            <input type="text" placeholder={"Address"} defaultValue={address} onChange={handleAddress} required/>
                         </div>
 
                         <div className={s.separator}></div>
-                        <p>Choose a six-digit pin that will be used to encrypt and decrypt all your data end-to-end.</p>
+                        <p>Please enter your security PIN.</p>
 
                         <OtpInput
                             value={key}
@@ -203,7 +211,20 @@ export default function Firstsignin({setFirstSignIn, uid}) {
                     </AlertDialog.Description>
 
                     <AlertDialog.Action asChild>
-                        <button className={s.Button} onClick={handleSubmit} disabled={!valid || key.length !== 6}>CONFIRM</button>
+                        <div className={s["upload-actions"]}>
+                            <button className={s["upload-cancel-button"]} onClick={
+                                () => {
+                                    setChangeDetails(false);
+                                }}>
+                                Cancel
+                            </button>
+                            <button className={s["upload-confirm-button"]}
+                                    disabled={!valid || !validKey}
+                                    onClick={handleSubmit}
+                            >
+                                Upload File
+                            </button>
+                        </div>
                     </AlertDialog.Action>
 
                 </AlertDialog.Content>

@@ -6,32 +6,9 @@ import OtpInput from 'react-otp-input';
 import cryptico from "cryptico";
 import {useState, useEffect} from "react";
 import {useKeyContext} from "@/context/keys";
-
-// const handleFileChange = e => {
-//     const pKey = cryptico.generateRSAKey('2134l', 512);
-//     const publicKey = cryptico.publicKeyString(pKey);
-//     const file = e.target.files[0];
-//     const reader = new FileReader();
-//     reader.readAsArrayBuffer(file);
-//     reader.onload = () => {
-//         // const data = reader.result;
-//         let key = "1234567887654321";
-//         let wordArray = CryptoJS.lib.WordArray.create(reader.result);
-//         let encrypted = CryptoJS.AES.encrypt(wordArray, key).toString();
-//
-//         let decrypted = CryptoJS.AES.decrypt(encrypted, key);
-//         let typedArray = convertWordArrayToUint8Array(decrypted);
-//
-//         const blob = new Blob([typedArray], {type: "application/pdf"});
-//         const href = URL.createObjectURL(blob);
-//
-//         const a = Object.assign(document.createElement('a'), {href, style: "display:none", download: "test"});
-//         document.body.appendChild(a);
-//         a.click();
-//         URL.revokeObjectURL(href);
-//         a.remove();
-//     };
-// };
+import {useUserContext} from "@/context/user";
+import {collection, getDocs, query, where} from "firebase/firestore";
+import {auth, db} from "@/app/firebase-config";
 
 export default function Key({setPrivateKey, publicKey, uid, patient}) {
     const [key, setKey] = useState("");
@@ -39,6 +16,20 @@ export default function Key({setPrivateKey, publicKey, uid, patient}) {
     const [wrong, setWrong] = useState("false");
 
     const [keys, setKeys] = useKeyContext();
+    const [user, setUser] = useUserContext();
+
+    const handleFetchData = async (privateKey) => {
+        const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid));
+        const data = await getDocs(q);
+        data.forEach(d => {
+            let temp = d.data();
+            const dNumber = cryptico.decrypt(temp.number,privateKey);
+            const dAddress = cryptico.decrypt(temp.address,privateKey);
+            temp.number = dNumber.plaintext;
+            temp.address = dAddress.plaintext;
+            setUser(temp);
+        });
+    };
 
     useEffect(() => {
         if (key.length === 6) {
@@ -48,7 +39,9 @@ export default function Key({setPrivateKey, publicKey, uid, patient}) {
             const generatedPublicKey = cryptico.publicKeyString(privateKey);
             if (publicKey === generatedPublicKey) {
                 setKeys({publicKey: generatedPublicKey, privateKey: privateKey, patient: patient});
-                setPrivateKey(privateKey);
+                handleFetchData(privateKey).then(() =>
+                    setPrivateKey(privateKey)
+                );
             }
             else
                 setWrong("true");
@@ -59,7 +52,6 @@ export default function Key({setPrivateKey, publicKey, uid, patient}) {
             }, 500);
         }
     }, [key]);
-
 
     return (
         <AlertDialog.Root open={true}>

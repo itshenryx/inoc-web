@@ -6,9 +6,9 @@ import Content from "./content.js"
 import {collection, getDocs, query, where} from "firebase/firestore";
 import {useEffect, useState} from "react";
 
-
 export default function Dashboard() {
     const [files,setFiles] = useState(undefined);
+    const [content,setContent] = useState(-1);
 
     const fetchData = async () => {
         const q = query(collection(db, "locker", auth.currentUser.uid, "list"));
@@ -29,8 +29,8 @@ export default function Dashboard() {
 
     return (
         <>
-            <Nav fileCount={files === undefined ? 0 : files.length}/>
-            <Content files={files} fetchData={fetchData}/>
+            <Nav fileCount={files === undefined ? 0 : files.length} content={content} setContent={setContent}/>
+            <Content files={files} fetchData={fetchData} content={content}/>
         </>
     )
 }

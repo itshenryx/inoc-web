@@ -10,6 +10,7 @@ import {LinearProgress} from "@mui/material";
 import Key from "@/app/dash/(popups)/key";
 import Firstsignin from "@/app/dash/(popups)/firstsignin";
 import {KeyProvider} from "@/context/keys";
+import {UserProvider} from "@/context/user";
 
 async function fetchPublicKey(uid, setFirstSignIn) {
     const q = query(collection(db, "users"), where("uid", "==", uid));
@@ -48,6 +49,7 @@ export default function DashLayout({children}) {
     return (
         Object.keys(user).length === 0 ? <LinearProgress/> :
             <KeyProvider>
+                <UserProvider>
                 <main className={s.main}>
                     {children}
                     {privateKey === undefined && <Key
@@ -58,6 +60,7 @@ export default function DashLayout({children}) {
                     />}
                     {firstSignIn && <Firstsignin setFirstSignIn={setFirstSignIn} uid={auth.currentUser.uid}/>}
                 </main>
+                </UserProvider>
             </KeyProvider>
     )
 }

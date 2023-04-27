@@ -8,20 +8,6 @@ import CryptoJS from 'crypto-js';
 import {auth, db} from '@/app/firebase-config';
 import {query, where, getDocs, collection, addDoc} from 'firebase/firestore';
 
-function convertWordArrayToUint8Array(wordArray) {
-    let arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
-    let length = wordArray.hasOwnProperty("sigBytes") ? wordArray.sigBytes : arrayOfWords.length * 4;
-    let uInt8Array = new Uint8Array(length), index = 0, word, i;
-    for (i = 0; i < length; i++) {
-        word = arrayOfWords[i];
-        uInt8Array[index++] = word >> 24;
-        uInt8Array[index++] = (word >> 16) & 0xff;
-        uInt8Array[index++] = (word >> 8) & 0xff;
-        uInt8Array[index++] = word & 0xff;
-    }
-    return uInt8Array;
-}
-
 function formatBytes(bytes, decimals = 2) {
     if (!+bytes) return '0B'
 
@@ -79,17 +65,6 @@ export default function Upload({uploader, setUploader, fetchData}) {
                 content: encrypted,
                 aes: aesKey,
             });
-            // const decrypted = CryptoJS.AES.decrypt(encrypted,aesKey);
-            // let typedArray = convertWordArrayToUint8Array(decrypted);
-            //
-            // const blob = new Blob([typedArray], {type:type});
-            // const href = URL.createObjectURL(blob);
-            //
-            // const a = Object.assign(document.createElement('a'), {href, style: "display:none", download: "test"});
-            // document.body.appendChild(a);
-            // a.click();
-            // URL.revokeObjectURL(href);
-            // a.remove();
         };
     };
 
@@ -188,11 +163,6 @@ export default function Upload({uploader, setUploader, fetchData}) {
                             </div>
                             <span>{uploadedFile.size}</span>
                             <button onClick={() => setUploadedFile(undefined)}>
-                                {/*<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}*/}
-                                {/*     stroke="currentColor" className="w-6 h-6">*/}
-                                {/*    <path strokeLinecap="round" strokeLinejoin="round"*/}
-                                {/*          d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>*/}
-                                {/*</svg>*/}
                                 DELETE
                             </button>
                         </div>
@@ -213,15 +183,6 @@ export default function Upload({uploader, setUploader, fetchData}) {
                             Upload File
                         </button>
                     </div>
-                    {/*<AlertDialog.Cancel>*/}
-                    {/*    <button className={s.Button} onClick={() => {*/}
-                    {/*    }}>*/}
-                    {/*       Cancel*/}
-                    {/*    </button>*/}
-                    {/*</AlertDialog.Cancel>*/}
-                    {/*<AlertDialog.Action asChild>*/}
-                    {/*    <button className={s.Button} disabled={key.length !== 6}>CONFIRM</button>*/}
-                    {/*</AlertDialog.Action>*/}
                 </AlertDialog.Content>
             </AlertDialog.Portal>
         </AlertDialog.Root>

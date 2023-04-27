@@ -123,7 +123,7 @@
 
     font-family: var(--font-poppins);
     border-radius: 0.5rem;
-    background-color: rgba(241, 241, 241, 0.40);
+    background-color: #f1f1f1;
     color: rgb(var(--clr-dark-blue));
     border: none;
     font-size: 1rem;
@@ -341,9 +341,16 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 100%;
+    width: 98%;
     color: rgb(var(--clr-dark-blue));
     cursor: pointer;
+    transition: 0.3s ease all;
+}
+
+.choice[data-selected="true"]{
+    background-color: rgb(var(--clr-dark-pink));
+    width: 100%;
+    color: rgb(var(--clr-gray));
 }
 
 .choice > svg {
@@ -366,6 +373,11 @@
     padding-inline: 1rem;
     border-radius: 0.4rem;
     padding-block: 0.2rem;
+}
+
+.choice[data-selected="true"] > div > span {
+    background-color: rgb(var(--clr-gray));
+    color: #cd7776;
 }
 
 .choice > div {
@@ -819,4 +831,259 @@
     bottom: 0.5rem;
     right: 0.5rem;
 }
+
+.detail-input {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    border-radius: .5rem;
+    padding: .5rem;
+    height: 3rem;
+    width: 100%;
+    background-color: #f1f1f1;
+    margin-bottom: .5rem;
+}
+
+.detail-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+}
+
+.detail-input input {
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    display: flex;
+    align-items: center;
+    align-content: center;
+    font-size: 1rem;
+    padding-inline: .5rem;
+    border-radius: .5rem;
+    border: none;
+    background: none;
+    width: 100%;
+    height: 100%;
+}
+
+.detail-input input:focus {
+    outline: none;
+}
+
+.detail-box[data-valid="true"] {
+    border: 1px solid #cd7776;
+}
+
+.detail-input:focus-within {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+
+.detail-input > span {
+    font-family: var(--font-dmsans);
+    font-weight: 500;
+    color: #cd7776;
+    margin-left: 0.3rem;
+    margin-right: 0.1rem;
+}
+
+.detail-input[data-value="number"] input {
+    display: flex;
+    justify-content: center;
+}
+
+.detail-input[data-value="age"] input {
+    text-align: center;
+}
+
+.detail-input[data-value="age"] {
+    max-width: 8ch;
+}
+
+.detail-grid {
+    width: 100%;
+    overflow: clip;
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+
+.SelectContent {
+    background-color: white;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    padding: 0.4rem;
+    border: 1px solid #f1f1f1;
+    z-index: 10;
+}
+
+.SelectViewport {
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.SelectItem {
+    font-family: var(--font-dmsans);
+    font-size: 1.0rem;
+    color: rgb(var(--clr-dark-blue));
+    border-radius: 0.5rem;
+    text-align: center;
+    max-width: 100%;
+    min-width: 100%;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    padding-block: 0.3rem;
+    user-select: none;
+    outline: none;
+}
+
+.SelectItem[data-highlighted] {
+    background-color: rgb(var(--clr-dark-pink));
+    color: rgb(var(--clr-gray));
+}
+
+.SelectTrigger{
+    flex: 1;
+    display: flex;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    border: none;
+    align-items: center;
+    max-width: 40%;
+    justify-content: center;
+    border-radius: .5rem;
+    /*padding: 0 1rem;*/
+    font-size: 1rem;
+    height: 3rem;
+    background-color: #f1f1f1;
+}
+
+.SelectTrigger:hover {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+.SelectTrigger:focus {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+
+.SelectTrigger[data-placeholder] {
+    /*background-color: rgb(var(--clr-dark-pink));*/
+    color: #878f9d;
+}
+
+/*Personal Dashboard*/
+.pd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100%;
+    width: 100%;
+    gap: 4rem;
+    max-width: 100%;
+    overflow: clip;
+}
+
+.pd-left {
+    box-shadow: 0px 0px 90px -50px rgba(0, 0, 0, 0.01);
+    border-radius: 2rem;
+    color: rgb(var(--clr-dark-blue));
+    font-family: var(--font-dmsans);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*padding-inline: 3rem;*/
+    height: 100%;
+    /*padding-block: 1rem;*/
+    width: 66%;
+    max-width: 66%;
+    gap: 4rem;
+}
+
+.pd-right {
+    height: 100%;
+    width: 33%;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0px 0px 90px -50px rgba(0, 0, 0, 0.01);
+    padding-inline: 3rem;
+    padding-block: 1rem;
+}
+
+.pd-profile {
+    border-radius: 2rem;
+    background-color: white;
+    padding-inline: 3rem;
+    padding-block: 1rem;
+}
+
+.pd-details {
+    /*height: 40%;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-content: center;*/
+    /*align-items: center;*/
+    /*flex-direction: column;*/
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: .9rem;
+}
+
+.pd-details-box {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.pd-details label {
+    display: flex;
+    justify-content: center;
+    /*text-align: center;*/
+    flex-direction: column;
+    align-content: center;
+    /*align-items: center;*/
+}
+
+.pd-details > button {
+    padding: .5rem 2rem;
+    background-color: #cd7776;
+    font-size: 1rem;
+    font-family: var(--font-poppins);
+    font-weight: 500;
+    color: rgb(var(--clr-gray));
+    border-radius: .5rem;
+    border: none;
+    /*bottom: 2rem;*/
+    /*right: 3rem;*/
+    /*position: absolute;*/
+}
+
+.pd-details label > span{
+    font-family: var(--font-poppins);
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #cd7776;
+}
+
+.pd-details label > p {
+    font-family: var(--font-dmsans);
+    font-size: 1.2rem;
+    color: rgb(var(--clr-dark-blue));
+}
+
+.pd-locker {
+    background-color: white;
+    height: 60%;
+    border-radius: 2rem;
+    padding-inline: 3rem;
+    padding-block: 1rem;
+}
+
 

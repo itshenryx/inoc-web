@@ -8,10 +8,6 @@ import File from "../(components)/file.js";
 export default function InocLocker({files, fetchData}) {
     const [uploader, setUploader] = useState(false);
 
-    const handleDelete = () => {
-
-    };
-
     return (<>
             {uploader && <Upload uploader={uploader} setUploader={setUploader} fetchData={fetchData}/>}
             <div className={s["il-container"]}>
