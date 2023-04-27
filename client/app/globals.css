@@ -79,3 +79,23 @@ button[disabled=disabled], button:disabled {
     opacity: 60%;
     cursor: not-allowed;
 }
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 rgba(255,255,255,0);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+    background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #f1f1f1;
+    border-radius: 1rem;
+}

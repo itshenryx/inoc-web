@@ -7,8 +7,8 @@ import {auth, db} from '@/app/firebase-config';
 import s from './page.module.css';
 import {query, where, getDocs, collection} from 'firebase/firestore';
 import {LinearProgress} from "@mui/material";
-import Key from "@/app/dash/key";
-import Firstsignin from "@/app/dash/firstsignin";
+import Key from "@/app/dash/(popups)/key";
+import Firstsignin from "@/app/dash/(popups)/firstsignin";
 import {KeyProvider} from "@/context/keys";
 
 async function fetchPublicKey(uid, setFirstSignIn) {

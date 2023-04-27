@@ -2,7 +2,7 @@
 
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import * as RadioGroup from '@radix-ui/react-radio-group';
-import s from './page.module.css';
+import s from '../page.module.css';
 import OtpInput from 'react-otp-input';
 import {collection, addDoc} from 'firebase/firestore';
 import {auth,db} from '@/app/firebase-config';

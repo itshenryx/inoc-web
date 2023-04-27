@@ -1,7 +1,7 @@
 'use client';
 
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
-import s from './page.module.css';
+import s from '../page.module.css';
 import OtpInput from 'react-otp-input';
 import cryptico from "cryptico";
 import {useState, useEffect} from "react";
@@ -42,7 +42,6 @@ export default function Key({setPrivateKey, publicKey, uid, patient}) {
 
     useEffect(() => {
         if (key.length === 6) {
-
             setDisabled(true);
             const passPhrase = key.toString() + uid.toString();
             const privateKey = cryptico.generateRSAKey(passPhrase , 1024);

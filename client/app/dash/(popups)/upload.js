@@ -34,7 +34,7 @@ function formatBytes(bytes, decimals = 2) {
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
 
-export default function Upload({uploader, setUploader}) {
+export default function Upload({uploader, setUploader, fetchData}) {
     const [keys, _] = useKeyContext();
     const [validEmail, setEmail] = useState(false);
     const [uploadedFile, setUploadedFile] = useState(undefined);
@@ -58,7 +58,7 @@ export default function Upload({uploader, setUploader}) {
     const handleFile = e => {
         const file = e.target.files[0];
 
-        if (file.size > 5097152)
+        if (file.size > 1097152)
             return;
 
         const type = file.type;
@@ -71,14 +71,13 @@ export default function Upload({uploader, setUploader}) {
 
             const wordArray = CryptoJS.lib.WordArray.create(reader.result);
             const encrypted = CryptoJS.AES.encrypt(wordArray, aesKey).toString();
-            const encryptedKey = cryptico.encrypt(aesKey, keys.publicKey);
 
             setUploadedFile({
                 name: file.name,
                 mimeType: type,
                 size: formatBytes(file.size),
                 content: encrypted,
-                aes: encryptedKey.cipher,
+                aes: aesKey,
             });
             // const decrypted = CryptoJS.AES.decrypt(encrypted,aesKey);
             // let typedArray = convertWordArrayToUint8Array(decrypted);
@@ -95,9 +94,27 @@ export default function Upload({uploader, setUploader}) {
     };
 
     const handleUpload = async e => {
+        e.target.disabled = true;
         if (keys.patient) {
             try {
-                await addDoc(collection(db, "locker", auth.currentUser.uid, "owned"),uploadedFile);
+                const encryptedKey = cryptico.encrypt(uploadedFile.aes, keys.publicKey);
+                const doc = await addDoc(collection(db, "locker", auth.currentUser.uid, "owned"),
+                    {
+                        name: uploadedFile.name,
+                        mimeType: uploadedFile.mimeType,
+                        size: uploadedFile.size,
+                        content: uploadedFile.content,
+                        aes: encryptedKey.cipher,
+                        uploader: auth.currentUser.email,
+                    }
+                );
+                await addDoc(collection(db, "locker", auth.currentUser.uid, "list"), {
+                    name: uploadedFile.name,
+                    id: doc.id,
+                    shared: false,
+                    size: uploadedFile.size,
+                });
+                fetchData();
                 setUploadedFile(undefined);
                 setUploader(false);
             } catch (e) {
@@ -105,13 +122,20 @@ export default function Upload({uploader, setUploader}) {
             }
         } else {
             try {
-                await addDoc(collection(db, "locker", reciever.uid, "recieved"),{
+                const encryptedKey = cryptico.encrypt(uploadedFile.aes, reciever.publickey);
+                const doc = await addDoc(collection(db, "locker", reciever.uid, "recieved"), {
                     name: uploadedFile.name,
                     mimeType: uploadedFile.mimeType,
                     size: uploadedFile.size,
                     content: uploadedFile.content,
-                    aes: uploadedFile.aes,
+                    aes: encryptedKey.cipher,
                     uploader: auth.currentUser.email,
+                });
+                await addDoc(collection(db, "locker", reciever.uid, "list"), {
+                    name: uploadedFile.name,
+                    id: doc.id,
+                    shared: true,
+                    size: uploadedFile.size,
                 });
                 setUploadedFile(undefined);
                 setUploader(false);
@@ -119,6 +143,7 @@ export default function Upload({uploader, setUploader}) {
                 console.log(e);
             }
         }
+        e.target.disabled = false;
     };
 
     return (
@@ -133,7 +158,7 @@ export default function Upload({uploader, setUploader}) {
                     </AlertDialog.Description>
                     {!keys.patient &&
                         <div className={s["upload-input"]}>
-                            <input type="email" placeholder={"Patient emaill address"} onChange={handleEmail} required/>
+                            <input type="email" placeholder={"Patient email address"} onChange={handleEmail} required/>
                             {!validEmail ?
                                 <CircularProgress size={20}/>
                                 :
@@ -155,7 +180,7 @@ export default function Upload({uploader, setUploader}) {
                                       clipRule="evenodd"/>
                             </svg>
                             <br/> Drag & Drop <br/> or <b>Browse</b>
-                            <br/> <span>Max File size: 5MB</span>
+                            <br/> <span>Max File size: 1MB</span>
                         </label> : <div className={s["file"]}>
                             <div>
                                 <p>{uploadedFile.name.split(".")[0]}</p>
@@ -182,7 +207,7 @@ export default function Upload({uploader, setUploader}) {
                         </button>
                         <button className={s["upload-confirm-button"]}
                                 disabled={keys.patient ? uploadedFile === undefined
-                                    : (uploadedFile === undefined && !validEmail)}
+                                    : (uploadedFile === undefined || !validEmail)}
                                 onClick={handleUpload}
                         >
                             Upload File

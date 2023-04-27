@@ -1,20 +1,36 @@
 'use client';
 
-import s from './page.module.css';
-import {signOut} from "firebase/auth";
-import {auth} from '@/app/firebase-config';
+import {auth, db} from '@/app/firebase-config';
 import Nav from "@/app/dash/nav";
 import Content from "./content.js"
+import {collection, getDocs, query, where} from "firebase/firestore";
+import {useEffect, useState} from "react";
+
 
 export default function Dashboard() {
-    const logout = async () => {
-        await signOut(auth);
-    }
+    const [files,setFiles] = useState(undefined);
+
+    const fetchData = async () => {
+        const q = query(collection(db, "locker", auth.currentUser.uid, "list"));
+        let arr = [];
+        await getDocs(q).then(r => {
+            r.forEach(doc => {
+                const temp = doc.data();
+                temp.selfid = doc.id;
+                arr.push(temp);
+            });
+            setFiles(arr);
+        });
+    };
+
+    useEffect(() => {
+        fetchData();
+    },[]);
 
     return (
         <>
-            <Nav/>
-            <Content/>
+            <Nav fileCount={files === undefined ? 0 : files.length}/>
+            <Content files={files} fetchData={fetchData}/>
         </>
     )
 }
