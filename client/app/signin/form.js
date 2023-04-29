@@ -7,13 +7,6 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import * as Toast from '@radix-ui/react-toast';
 import transpile from "@/app/transpileError";
-// import cryptico from "cryptico";
-//
-// const generateKey = () => {
-//     let privateKey = cryptico.generateRSAKey("415551", 1024);
-//     let publicKey = cryptico.publicKeyString(privateKey);
-//     console.log(publicKey);
-// }
 
 export default function Form() {
     const [disable, setDisable] = useState(false);

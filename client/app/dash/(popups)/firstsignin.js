@@ -7,7 +7,7 @@ import s from '../page.module.css';
 import OtpInput from 'react-otp-input';
 import {collection, addDoc} from 'firebase/firestore';
 import {auth, db} from '@/app/firebase-config';
-import cryptico from "cryptico";
+import {cryptico} from "@veikkos/cryptico";
 import {useEffect, useState} from "react";
 
 export default function Firstsignin({setFirstSignIn, uid}) {

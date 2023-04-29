@@ -6,7 +6,7 @@ import Share from "@/app/dash/(popups)/share";
 import {useState} from "react";
 import {doc, getDoc, deleteDoc} from "firebase/firestore";
 import {auth, db} from "@/app/firebase-config";
-import cryptico from "cryptico";
+import {cryptico} from "@veikkos/cryptico";
 import CryptoJS from "crypto-js";
 import {useKeyContext} from "@/context/keys";
 

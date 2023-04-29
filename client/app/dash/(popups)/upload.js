@@ -1,5 +1,5 @@
 import {useKeyContext} from "@/context/keys";
-import cryptico from "cryptico";
+import {cryptico} from "@veikkos/cryptico";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import s from "@/app/dash/page.module.css";
 import {useState} from "react";

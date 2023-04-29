@@ -3,7 +3,7 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import s from '../page.module.css';
 import OtpInput from 'react-otp-input';
-import cryptico from "cryptico";
+import {cryptico} from "@veikkos/cryptico";
 import {useState, useEffect} from "react";
 import {useKeyContext} from "@/context/keys";
 import {useUserContext} from "@/context/user";

@@ -7,7 +7,7 @@ import s from '../page.module.css';
 import OtpInput from 'react-otp-input';
 import {collection, setDoc, getDocs, where, query, doc} from 'firebase/firestore';
 import {auth, db} from '@/app/firebase-config';
-import cryptico from "cryptico";
+import {cryptico} from "@veikkos/cryptico";
 import {useEffect, useState} from "react";
 import {useUserContext} from "@/context/user";
 import {useKeyContext} from "@/context/keys";
