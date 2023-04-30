@@ -28,7 +28,9 @@ export default function InocLocker({files, fetchData}) {
                     </div>
                 </div>
                 <div className={s["il-body"]}>
-                    {files === undefined ? (<> </>)
+                    {files === undefined ? (<>
+
+                        </>)
                         : files.map(file => {
                             return (<File data={file} fetchData={fetchData}/>);
                         })

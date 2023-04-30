@@ -86,13 +86,17 @@ export default function UpdateDetails({changeDetails, setChangeDetails}) {
     };
 
     const handleNumber = e => {
-        const fixed = e.target.value.replace(/\D/g, "");
+        let fixed = e.target.value.replace(/\D/g, "");
+        if (fixed.startsWith("0"))
+            fixed = fixed.slice(1);
         e.target.value = fixed;
         setNumber(fixed);
     };
 
     const handleAge = e => {
-        const fixed = e.target.value.replace(/\D/g, "");
+        let fixed = e.target.value.replace(/\D/g, "");
+        if (fixed.startsWith("0"))
+            fixed = fixed.slice(1);
         e.target.value = fixed;
         setAge(fixed);
     };
@@ -222,7 +226,7 @@ export default function UpdateDetails({changeDetails, setChangeDetails}) {
                                     disabled={!valid || !validKey}
                                     onClick={handleSubmit}
                             >
-                                Upload File
+                                Edit Details
                             </button>
                         </div>
                     </AlertDialog.Action>

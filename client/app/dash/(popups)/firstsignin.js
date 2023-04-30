@@ -63,13 +63,17 @@ export default function Firstsignin({setFirstSignIn, uid}) {
     };
 
     const handleNumber = e => {
-        const fixed = e.target.value.replace(/\D/g, "");
+        let fixed = e.target.value.replace(/\D/g, "");
+        if (fixed.startsWith("0"))
+            fixed = fixed.slice(1);
         e.target.value = fixed;
         setNumber(fixed);
     };
 
     const handleAge = e => {
-        const fixed = e.target.value.replace(/\D/g, "");
+        let fixed = e.target.value.replace(/\D/g, "");
+        if (fixed.startsWith("0"))
+            fixed = fixed.slice(1);
         e.target.value = fixed;
         setAge(fixed);
     };
