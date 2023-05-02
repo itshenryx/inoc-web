@@ -37,7 +37,8 @@ export default function ExistingCase({sCase, fetchSymptosis}) {
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "symptosis", sCase.pId), (doc) => {
-            setCArray(doc.data().comments);
+            if ( doc !== undefined )
+                setCArray(doc.data().comments);
         });
 
         const patientAES = cryptico.decrypt(sCase.pKey, keys.privateKey);
@@ -196,7 +197,7 @@ export default function ExistingCase({sCase, fetchSymptosis}) {
                                         <span>{sCase.dEmail}</span>
                                     </div>
                                     <div className={s["case-chat-bodyc"]}>
-                                        {
+                                        { cArray !== undefined &&
                                             cArray.map((data) => {
                                                 if (data.substring(0,2) === "p_")
                                                     return (
