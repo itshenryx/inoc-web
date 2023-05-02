@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
 import CryptoJS from 'crypto-js';
 import {auth, db} from '@/app/firebase-config';
-import {addDoc, collection, doc, getDoc, getDocs, query, where} from 'firebase/firestore';
+import {addDoc, collection, doc, getDoc, getDocs, query, setDoc, where} from 'firebase/firestore';
 
 
 export default function Share({data, sharing, setSharing}) {
@@ -93,7 +93,7 @@ export default function Share({data, sharing, setSharing}) {
         e.target.disabled = true;
         try {
             const encryptedKey = cryptico.encrypt(file.aes, reciever.publickey);
-            const doc = await addDoc(collection(db, "locker", reciever.uid, "recieved"), {
+            await setDoc(doc(db, "locker", reciever.uid, "recieved", data.id), {
                 name: file.name,
                 mimeType: file.mimeType,
                 size: file.size,
@@ -103,7 +103,7 @@ export default function Share({data, sharing, setSharing}) {
             });
             await addDoc(collection(db, "locker", reciever.uid, "list"), {
                 name: file.name,
-                id: doc.id,
+                id: data.id,
                 shared: true,
                 size: file.size,
             });

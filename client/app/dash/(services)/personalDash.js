@@ -101,6 +101,8 @@ export default function PersonalDash({files, setContent}) {
                             </div>
                         </div>
                     </div>
+                    {
+                        user.patient ?
                     <div className={s["pd-bottom-box"]}>
                         <div className={s["pd-history"]}>
                             <div className={s["pd-rbox-title"]}>
@@ -118,9 +120,27 @@ export default function PersonalDash({files, setContent}) {
                             </div>
                         </div>
                         <div className={s["pd-symptosis"]}>
-                            <h2>Open Symptosis Cases</h2>
+                            <h2>Open Symptosis Case</h2>
                         </div>
-                    </div>
+                    </div> :
+                            <div className={s["pd-bottom-box"]}>
+                                <div className={s["pd-history"]}>
+                                    <div className={s["pd-rbox-title"]}>
+                                        <p>
+                                            Open Symptosis Cases
+                                        </p>
+                                        <button onClick={() => setContent(3)}>
+                                            <span>Read more</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8}
+                                                 stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                    }
 
                     {/*<div className={s["pd-rbox"]}>*/}
                     {/*    <div className={s["pd-rbox-title"]}>*/}

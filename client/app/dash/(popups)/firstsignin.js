@@ -26,6 +26,9 @@ export default function Firstsignin({setFirstSignIn, uid}) {
         const publicKey = cryptico.publicKeyString(pKey);
         const eNumber = cryptico.encrypt(number, publicKey);
         const eAddress = cryptico.encrypt(address, publicKey);
+        const formattedName = name.split(' ').map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ');
 
         try {
             await addDoc(collection(db, "users"), {
@@ -33,28 +36,35 @@ export default function Firstsignin({setFirstSignIn, uid}) {
                 publickey: publicKey,
                 patient: isPatient,
                 email: auth.currentUser.email,
-                name: name,
+                name: formattedName,
                 number: eNumber.cipher,
                 age: age,
                 gender: gender,
                 blood: blood,
                 address: eAddress.cipher,
             });
+            if (!isPatient)
+                await addDoc(collection(db, "doctors"), {
+                    uid: uid,
+                    name: formattedName,
+                    email: auth.currentUser.email,
+                    publicKey: publicKey,
+                });
             setFirstSignIn(false);
         } catch (e) {
             console.log(e);
         }
     };
 
-    useEffect(() =>{
+    useEffect(() => {
         if (name !== undefined &&
-           (number !== undefined && number.length === 10) &&
+            (number !== undefined && number.length === 10) &&
             age !== undefined &&
             gender !== undefined &&
-            blood !== undefined  &&
+            blood !== undefined &&
             address !== undefined
-        )  setValid(true);
-    }, [name,number,age,gender,blood,address,valid]);
+        ) setValid(true);
+    }, [name, number, age, gender, blood, address, valid]);
 
     const handleName = e => {
         const fixed = e.target.value.replace(/[^a-zA-Z\s]/g, "");

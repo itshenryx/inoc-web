@@ -32,5 +32,5 @@ export default function Dashboard() {
             <Nav fileCount={files === undefined ? 0 : files.length} content={content} setContent={setContent}/>
             <Content files={files} fetchData={fetchData} content={content} setContent={setContent}/>
         </>
-    )
+    );
 }

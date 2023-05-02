@@ -51,11 +51,27 @@
 }
 
 .AlertDialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 0;
     color: rgb(var(--clr-dark-blue));
     font-family: var(--font-dmsans);
     font-size: 1.2rem;
     font-weight: 500;
+}
+
+.AlertDialogTitle svg{
+    width: 1.5rem;
+    padding: .1rem;
+    color: rgb(var(--clr-dark-blue));
+    opacity: 50%;
+    border-radius: 1rem;
+}
+
+.AlertDialogTitle svg:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
 }
 
 .AlertDialogDescription {
@@ -317,6 +333,10 @@
     /*background-color: white;*/
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
     /*box-shadow: 0px 0px 90px -37px rgba(0,0,0,0.1);*/
 }
 
@@ -1246,9 +1266,11 @@
 .file-preview:hover {
     outline: 1px solid #cd7776;
 }
+
 .file-preview:hover > span {
     display: none;
 }
+
 .file-preview:hover > svg {
     display: block;
 }
@@ -1292,4 +1314,335 @@
     border-radius: .5rem;
     color: rgb(var(--clr-gray));
     font-weight: 500;
+}
+
+.symptosis-patient {
+    background-color: white;
+    box-shadow: 0px 0px 90px -50px rgba(0, 0, 0, 0.01);
+    border-radius: 1.5rem;
+    color: rgb(var(--clr-dark-blue));
+    font-family: var(--font-dmsans);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-inline: 1.9rem;
+    padding-block: 1.5rem;
+    max-width: 28rem;
+}
+
+.sp-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding-bottom: .5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f1f1f1;
+    width: 100%;
+}
+
+.symptosis-patient textarea {
+    background: #f1f1f1;
+    margin-top: 1rem;
+    border-radius: .5rem;
+    border: none;
+    resize: none;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    display: flex;
+    max-height: 4.1rem;
+    margin-bottom: 1rem;
+}
+
+.symptosis-patient textarea:focus {
+    border: 1px solid #cd7776;
+    outline: none;
+}
+
+.symptosis-doctor {
+
+}
+
+.symptosis-symptoms {
+    display: flex;
+    gap: .5rem;
+    margin-top: 1rem;
+    flex-direction: column;
+    width: 100%;
+}
+
+.SymptomTrigger {
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: .5rem;
+    height: 3rem;
+    text-align: left;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    font-size: 1rem;
+    padding: 0 1rem;
+}
+
+.SymptomContent {
+    max-height: 5rem;
+    background-color: white;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    padding: 0.4rem;
+    border: 2px solid #f1f1f1;
+    z-index: 10;
+    right: 0;
+}
+
+.SymptomViewport {
+}
+
+.SymptomItem {
+    font-family: var(--font-dmsans);
+    font-size: 1.0rem;
+    color: rgb(var(--clr-dark-blue));
+    /*text-align: center;*/
+    max-width: 100%;
+    min-width: 100%;
+    padding-block: .3rem;
+    padding-inline: .5rem;
+    user-select: none;
+    outline: none;
+    display: flex;
+    justify-content: space-between;
+    /*border-bottom: 2px solid #f1f1f1;*/
+}
+.SymptomItem[data-highlighted] {
+    border-radius: 0.5rem;
+    background-color: rgb(var(--clr-dark-pink));
+    color: rgb(var(--clr-gray));
+}
+.SymptomItem[data-disabled] {
+    /*border-radius: 0.5rem;*/
+    /*background-color: rgb(var(--clr-dark-pink));*/
+    /*color: rgb(var(--clr-gray));*/
+    opacity: 20%;
+}
+
+.ItemSpacing {
+    width: 100%;
+    text-align: right;
+}
+
+.SymptomSeparator {
+    height: 1px;
+    background: #f1f1f1;
+    margin: 5px;
+}
+
+.SymptomTrigger:hover {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+.SymptomTrigger:focus {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+.SymptomTrigger[data-placeholder] {
+    color: #878f9d;
+}
+
+.DoctorTrigger:hover {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+.DoctorTrigger:focus {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+.DoctorTrigger[data-placeholder] {
+    color: #878f9d;
+}
+
+.sp-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.sp-left-buttons {
+    margin-right: 1rem;
+    display: flex;
+    gap: .3rem;
+}
+
+.sp-left-buttons button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.sp-left-buttons button > svg {
+    width : 1.8rem;
+    color: rgb(var(--clr-dark-blue));
+}
+
+.SelectLabel {
+    font-size: .9rem;
+    padding: 0 .5rem;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-dark-pink));
+}
+
+.DoctorTrigger {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: .5rem;
+    height: 3rem;
+    text-align: left;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    font-size: 1rem;
+    padding: 0 1rem;
+}
+
+.SelectScrollButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    background-color: white;
+    color: rgb(var(--clr-dark-pink));
+    cursor: default;
+}
+
+.SelectScrollButton svg{
+    width: 1rem;
+}
+
+.sp-buttons > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding: 0 1rem;
+    min-width: 10rem;
+    max-width: 100%;
+    background-color: #f1f1f1;
+    border-radius: .5rem;
+    gap: .5rem;
+    /*text-transform: uppercase;*/
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-dark-blue));
+    font-size: 1rem;
+}
+
+.sp-buttons button[data-attached="true"]{
+    /*background: #cd7776;*/
+    border: 1px solid #cd7776;
+    background: none;
+    /*color: rgb(var(--clr-gray));*/
+}
+
+.sp-buttons > button > span {
+    max-width: 15ch;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sp-buttons > button > svg {
+    width: 1.3rem;
+}
+
+.select-file {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 3rem;
+    max-height: 3rem;
+    border: 2px #f1f1f1 solid;
+    background: none;
+    border-radius: .5rem;
+    padding: 0 1rem;
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-dark-blue));
+}
+
+.select-file:hover {
+    background: #f1f1f1;
+}
+
+.select-file h1 {
+    font-weight: 400;
+    display: flex;
+    font-size: 1rem;
+}
+
+.select-file h1 > span {
+    text-transform: uppercase;
+    background: #cd7776;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-gray));
+    font-weight: 500;
+    font-size: .8rem;
+    border-radius: .3rem;
+    padding: .1rem .5rem;
+    margin-right: .5rem;
+}
+
+.select-file h1 > p {
+    max-width: 15ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.select-file > span {
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-dark-blue));
+    font-weight: 500;
+}
+
+.SelectFileDescription {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: .5rem;
+    overflow: auto;
+    max-height: 25rem;
+
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-dark-blue));
+    font-size: 15px;
+}
+
+.symptosis-submit {
+    width: 100%;
+    border-radius: .5rem;
+    border: none;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    height: 3rem;
+    background: #cd7776;
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    letter-spacing: .1rem;
+    color: rgb(var(--clr-gray));
+}
+
+.symptosis-submit[data-valid="false"] {
+    display: none;
 }
