@@ -5,7 +5,7 @@ import * as RadioGroup from '@radix-ui/react-radio-group';
 import * as Select from '@radix-ui/react-select';
 import s from '../page.module.css';
 import OtpInput from 'react-otp-input';
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, addDoc, doc, setDoc} from 'firebase/firestore';
 import {auth, db} from '@/app/firebase-config';
 import {cryptico} from "@veikkos/cryptico";
 import {useEffect, useState} from "react";
@@ -31,7 +31,7 @@ export default function Firstsignin({setFirstSignIn, uid}) {
         }).join(' ');
 
         try {
-            await addDoc(collection(db, "users"), {
+            await setDoc(doc(db, "users",uid), {
                 uid: uid,
                 publickey: publicKey,
                 patient: isPatient,
@@ -44,11 +44,14 @@ export default function Firstsignin({setFirstSignIn, uid}) {
                 address: eAddress.cipher,
             });
             if (!isPatient)
-                await addDoc(collection(db, "doctors"), {
+                await setDoc(doc(db, "doctors", uid), {
                     uid: uid,
                     name: formattedName,
+                    age: age,
+                    gender: gender,
                     email: auth.currentUser.email,
                     publicKey: publicKey,
+                    number: number,
                 });
             setFirstSignIn(false);
         } catch (e) {
@@ -128,7 +131,7 @@ export default function Firstsignin({setFirstSignIn, uid}) {
 
                         <div className={s["detail-box"]}>
                             <div className={s["detail-input"]}>
-                                <input type="text" placeholder={"Full Name"} onChange={handleName} required/>
+                                <input type="text" placeholder={"Full Name"} onChange={handleName} maxLength="25" required/>
                             </div>
                             <div className={s["detail-input"]} data-value={"number"}>
                                 <span>+91</span>
@@ -198,7 +201,7 @@ export default function Firstsignin({setFirstSignIn, uid}) {
                             </Select.Root>
                         </div>
                         <div className={s["detail-input"]}>
-                            <input type="text" placeholder={"Address"} onChange={handleAddress} required/>
+                            <input type="text" maxLength="40" placeholder={"Address"} onChange={handleAddress} required/>
                         </div>
 
                         <div className={s.separator}></div>

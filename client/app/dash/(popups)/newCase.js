@@ -2,21 +2,23 @@ import s from "@/app/dash/page.module.css";
 import {useEffect, useState} from "react";
 import * as Select from "@radix-ui/react-select";
 import symptomList from "@/app/dash/(util)/symptomList";
-import {doc, collection, getDocs, query, setDoc} from "firebase/firestore";
-import {db} from "@/app/firebase-config";
+import {doc, collection, getDocs, query, setDoc, getDoc, addDoc} from "firebase/firestore";
+import {auth, db} from "@/app/firebase-config";
 import AttachFile from "@/app/dash/(popups)/attachFile";
 import {cryptico} from "@veikkos/cryptico";
 import CryptoJS from "crypto-js";
 import {useUserContext} from "@/context/user";
+import {useKeyContext} from "@/context/keys";
 
 async function getAIresult(symptoms) {
     const body = {symptoms: symptoms.filter(r => r !== "")};
-    console.log(body);
     return fetch("http://16.16.103.70/predict", {
         method: 'POST',
         mode: 'cors',
-        referrerPolicy: 'unsafe-url',
         body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 }
 
@@ -42,7 +44,7 @@ function Symptom({symptoms, index, setRefreshState}) {
                             <Select.Label className={s.SelectLabel}>Symptoms</Select.Label>
                             {
                                 symptomList.map((data, index) => {
-                                    const formatted = data.toLowerCase().replace(" ", "_");
+                                    const formatted = data.toLowerCase().replaceAll(" ", "_");
                                     return (
                                         <>
                                             <Select.Item value={formatted} disabled={symptoms.includes(formatted)}
@@ -91,8 +93,8 @@ function Doctors({doctors, selectedDoctor, setSelectedDoctor}) {
                                 doctors.map((data) => {
                                     return (
                                         <>
-                                            <Select.Item value={data[1]} className={s.SymptomItem}>
-                                                <Select.ItemText>{data[0]}</Select.ItemText>
+                                            <Select.Item value={data} className={s.SymptomItem}>
+                                                <Select.ItemText>{data.name}</Select.ItemText>
                                             </Select.Item>
                                         </>
                                     );
@@ -113,7 +115,50 @@ function Doctors({doctors, selectedDoctor, setSelectedDoctor}) {
     );
 }
 
-export default function NewCase({files}) {
+function Severity({severity, setSeverity}) {
+    return (
+        <Select.Root defaultValue={"0"} onValueChange={r => {
+            setSeverity(r);
+        }}>
+            <Select.Trigger className={s.SeverityTrigger}>
+                <Select.Value placeholder={"Severity"}/>
+            </Select.Trigger>
+            <Select.Portal>
+                <Select.Content className={s.SymptomContent}>
+                    <Select.ScrollUpButton className={s.SelectScrollButton}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5}
+                             stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"/>
+                        </svg>
+                    </Select.ScrollUpButton>
+                    <Select.Viewport className={s.SymptomViewport}>
+                        <Select.Group>
+                            <Select.Label className={s.SelectLabel}>Severity</Select.Label>
+                            <Select.Item value={"0"} className={s.SymptomItem}>
+                                <Select.ItemText>Low</Select.ItemText>
+                            </Select.Item>
+                            <Select.Item value={"1"} className={s.SymptomItem}>
+                                <Select.ItemText>Medium</Select.ItemText>
+                            </Select.Item>
+                            <Select.Item value={"2"} className={s.SymptomItem}>
+                                <Select.ItemText>High</Select.ItemText>
+                            </Select.Item>
+                        </Select.Group>
+                    </Select.Viewport>
+                    <Select.ScrollDownButton className={s.SelectScrollButton}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5}
+                             stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                        </svg>
+                    </Select.ScrollDownButton>
+                    <Select.Arrow/>
+                </Select.Content>
+            </Select.Portal>
+        </Select.Root>
+    );
+}
+
+export default function NewCase({files,fetchSymptosis}) {
     const [description, setDescription] = useState("");
     const [symptoms, setSymptoms] = useState(["", "", "", "", ""]);
     const [symptomsCount, setSymptomsCount] = useState(1);
@@ -122,9 +167,11 @@ export default function NewCase({files}) {
     const [selectedDoctor, setSelectedDoctor] = useState(undefined);
     const [attached, setAttached] = useState(undefined);
     const [open, setOpen] = useState(false);
+    const [severity, setSeverity] = useState("0");
     const [valid, setValid] = useState(false);
 
     const [user,_] = useUserContext();
+    const [keys,__] = useKeyContext();
 
     const fetchDoctors = async () => {
         const q = query(collection(db, "doctors"));
@@ -132,7 +179,7 @@ export default function NewCase({files}) {
         await getDocs(q).then(r => {
             r.forEach(doc => {
                 const temp = doc.data();
-                arr.push([temp.name, temp.email]);
+                arr.push(temp);
             });
             setDoctors(arr);
         });
@@ -148,6 +195,44 @@ export default function NewCase({files}) {
         else
             setValid(false);
     }, [selectedDoctor,refreshState,description, symptoms,symptomsCount]);
+
+    const fetchAndDecrypt = async (data) => {
+        const snap = await getDoc(doc(db, "locker", auth.currentUser.uid, "owned", data.id));
+        let fileData = snap.data();
+        const decryptedKey = cryptico.decrypt(fileData.aes, keys.privateKey);
+        let aesKey = decryptedKey.plaintext;
+        const decryptedContent = CryptoJS.AES.decrypt(fileData.content, aesKey);
+
+        // Generate new AES key and encrypt again;
+        aesKey = Math.random().toString().slice(2, 11);
+        for (let i = 0; i < 10; i++)
+            aesKey += Math.random().toString().slice(2, 11);
+        fileData.content = CryptoJS.AES.encrypt(decryptedContent, aesKey).toString();
+        fileData.aes = aesKey;
+        return fileData;
+    };
+
+    const handleShare = async (file) => {
+        try {
+            const encryptedKey = cryptico.encrypt(file.aes, selectedDoctor.publicKey);
+            await setDoc(doc(db, "locker", selectedDoctor.uid, "recieved", attached.id), {
+                name: file.name,
+                mimeType: file.mimeType,
+                size: file.size,
+                content: file.content,
+                aes: encryptedKey.cipher,
+                uploader: auth.currentUser.email,
+            });
+            await setDoc(doc(db, "locker", selectedDoctor.uid, "list", attached.id), {
+                name: file.name,
+                id: attached.id,
+                shared: true,
+                size: file.size,
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     const handleSubmit = async e => {
         e.target.disabled = true;
@@ -177,19 +262,53 @@ export default function NewCase({files}) {
             //Decryption code
             // CryptoJS.AES.decrypt(encrypted, "1321231313").toString(CryptoJS.enc.Utf8)
 
+            // Prediction from AI
             const res = await getAIresult(symptoms);
-            console.log(res);
-            // await setDoc(doc(db, "symptosis", user.uid), {
-            //     pid: user.uid,
-            //     name: user.name,
-            //     age: user.age,
-            //     blood: user.blood,
-            //     gender: user.gender,
-            //     attached: attached === undefined ? "na" : attached.id,
-            //     description: eDescription,
-            //     symptoms: eSymptoms,
-            // });
-            // window.location.reload();
+            const prediction = await res.json();
+            const ePrediction = CryptoJS.AES.encrypt(prediction.toString(), aesKey).toString();
+
+            await setDoc(doc(db, "symptosis", user.uid), {
+                pId: user.uid,
+                pName: user.name,
+                pAge: user.age,
+                pBlood: user.blood,
+                pGender: user.gender,
+                pNumber: eNumber.cipher,
+                pEmail: user.email,
+                pKey: patientKey.cipher,
+
+                dId: selectedDoctor.uid,
+                dName: selectedDoctor.name,
+                dAge: selectedDoctor.age,
+                dEmail: selectedDoctor.email,
+                dNumber: selectedDoctor.number,
+                dKey: doctorKey.cipher,
+
+                date: formattedDate,
+                severity: severity,
+                attachedName: attached === undefined ? "na" : attached.name,
+                attached: attached === undefined ? "na" : attached.id,
+                description: eDescription,
+                symptoms: eSymptoms,
+                prediction: ePrediction,
+            });
+
+            await setDoc(doc(db, "symptosis", selectedDoctor.uid, "list", user.uid), {
+                pId: user.uid,
+                pName: user.name,
+                dKey: doctorKey.cipher,
+
+                date: formattedDate,
+                severity: severity,
+                description: eDescription,
+                prediction: ePrediction,
+            });
+
+            if (attached !== undefined) {
+                const file = await fetchAndDecrypt(attached);
+                await handleShare(file);
+            }
+            fetchSymptosis();
         } catch (e) {
             console.log(e);
         }
@@ -203,8 +322,11 @@ export default function NewCase({files}) {
                 <div className={s["sp-title"]}>
                     Open a new Symptosis case
                 </div>
-                <p>Select the doctor you want to contact.</p>
-                <Doctors doctors={doctors} setSelectedDoctor={setSelectedDoctor} selectedDoctor={selectedDoctor}/>
+                <p>Select the doctor you want to contact and the serverity of your case.</p>
+                <div className={s["symptosis-select-doc"]} >
+                    <Doctors doctors={doctors} setSelectedDoctor={setSelectedDoctor} selectedDoctor={selectedDoctor}/>
+                    <Severity severity={severity} setSeverity={setSeverity} />
+                </div>
                 <p>Enter a proper description of your medical issue and when it started and details you feel are necessary or
                     viable.</p>
                 <textarea placeholder={"Enter a brief description about your issues here."} value={description}

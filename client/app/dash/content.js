@@ -6,7 +6,7 @@ import {useKeyContext} from "@/context/keys";
 import MedicalHistory from "@/app/dash/(services)/medicalHistory";
 import Symptosis from "@/app/dash/(services)/symptosis";
 
-export default function Content({files, fetchData, content, setContent}) {
+export default function Content({files, fetchSymptosis, fetchData, content, setContent, sCase}) {
     const [keys, _] = useKeyContext();
 
     if (keys.publicKey === "")
@@ -17,7 +17,7 @@ export default function Content({files, fetchData, content, setContent}) {
                 {content === 0 && <PersonalDash files={files} setContent={setContent} />}
                 {content === 1 && <MedicalHistory />}
                 {content === 2 && <InocLocker files={files} fetchData={fetchData}/>}
-                {content === 3 && <Symptosis files={files} />}
+                {content === 3 && <Symptosis files={files} fetchSymptosis={fetchSymptosis} sCase={sCase} />}
             </div>
         );
 }

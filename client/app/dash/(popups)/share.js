@@ -101,7 +101,7 @@ export default function Share({data, sharing, setSharing}) {
                 aes: encryptedKey.cipher,
                 uploader: auth.currentUser.email,
             });
-            await addDoc(collection(db, "locker", reciever.uid, "list"), {
+            await setDoc(doc(db, "locker", reciever.uid, "list", data.id), {
                 name: file.name,
                 id: data.id,
                 shared: true,

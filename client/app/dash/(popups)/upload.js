@@ -6,7 +6,7 @@ import {useState} from "react";
 import {CircularProgress} from "@mui/material";
 import CryptoJS from 'crypto-js';
 import {auth, db} from '@/app/firebase-config';
-import {query, where, getDocs, collection, addDoc} from 'firebase/firestore';
+import {query, where, getDocs, collection, addDoc, setDoc, doc} from 'firebase/firestore';
 
 function formatBytes(bytes, decimals = 2) {
     if (!+bytes) return '0B'
@@ -73,7 +73,7 @@ export default function Upload({uploader, setUploader, fetchData}) {
         if (keys.patient) {
             try {
                 const encryptedKey = cryptico.encrypt(uploadedFile.aes, keys.publicKey);
-                const doc = await addDoc(collection(db, "locker", auth.currentUser.uid, "owned"),
+                const data = await addDoc(collection(db, "locker", auth.currentUser.uid, "owned"),
                     {
                         name: uploadedFile.name,
                         mimeType: uploadedFile.mimeType,
@@ -83,9 +83,9 @@ export default function Upload({uploader, setUploader, fetchData}) {
                         uploader: auth.currentUser.email,
                     }
                 );
-                await addDoc(collection(db, "locker", auth.currentUser.uid, "list"), {
+                await setDoc(doc(db, "locker", auth.currentUser.uid, "list",data.id), {
                     name: uploadedFile.name,
-                    id: doc.id,
+                    id: data.id,
                     shared: false,
                     size: uploadedFile.size,
                 });
