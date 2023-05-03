@@ -20,7 +20,7 @@ function formatBytes(bytes, decimals = 2) {
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
 
-export default function Upload({uploader, setUploader, fetchData}) {
+export default function Upload({uploader, setUploader}) {
     const [keys, _] = useKeyContext();
     const [validEmail, setEmail] = useState(false);
     const [uploadedFile, setUploadedFile] = useState(undefined);
@@ -88,8 +88,8 @@ export default function Upload({uploader, setUploader, fetchData}) {
                     id: data.id,
                     shared: false,
                     size: uploadedFile.size,
+                    deletable: true,
                 });
-                fetchData();
                 setUploadedFile(undefined);
                 setUploader(false);
             } catch (e) {

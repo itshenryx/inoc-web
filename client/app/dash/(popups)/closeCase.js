@@ -1,16 +1,22 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import s from '../page.module.css';
-import {doc, deleteDoc} from 'firebase/firestore';
-import {db} from '@/app/firebase-config';
+import {doc, deleteDoc, updateDoc} from 'firebase/firestore';
+import {auth, db} from '@/app/firebase-config';
 
-export default function CloseCase({setOpen, fetchSymptosis, userID, docID}) {
+export default function CloseCase({setOpen,attachedFile, userID, docID}) {
     const handleDelete = async () => {
         try {
+            if (attachedFile !== "na"){
+                await updateDoc(doc(db,"locker",auth.currentUser.uid,"list",attachedFile),{
+                    deletable: true,
+                })
+                await deleteDoc(doc(db,"locker",docID, "recieved", attachedFile));
+                await deleteDoc(doc(db,"locker",docID, "list" , attachedFile));
+            }
             await deleteDoc(doc(db, "symptosis", userID));
             await deleteDoc(doc(db, "symptosis", docID, "list", userID));
-            fetchSymptosis();
         } catch (e) {
-            console.log(e);
+            console.log(e)
         }
     };
 

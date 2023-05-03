@@ -3,23 +3,28 @@ import {useEffect, useState} from "react";
 import {cryptico} from "@veikkos/cryptico";
 import {useKeyContext} from "@/context/keys";
 import CryptoJS from "crypto-js";
-import {doc, updateDoc, getDoc, onSnapshot} from "firebase/firestore";
+import {doc, updateDoc, getDoc, onSnapshot, collection, getDocs} from "firebase/firestore";
 import {auth, db} from "@/app/firebase-config";
 import {convertWordArrayToUint8Array} from "@/app/dash/(util)/convertWordArrayToUint8Array";
 import CloseCase from "@/app/dash/(popups)/closeCase";
+import Prescribe from "@/app/dash/(popups)/prescribe";
+import ViewHistory from "@/app/dash/(popups)/viewHistory";
 
-export default function ExistingCase({sCase}) {
+export default function ExistingCaseDoc({sCase, setSelectedCase}) {
     const [pKey, setPKey] = useState(undefined);
     const [description, setDescription] = useState("");
     const [symptoms, setSymptoms] = useState("");
     const [prediction, setPrediction] = useState("");
+    const [number, setNumber] = useState("");
+    const [history, setHistory] = useState(undefined);
     const [open, setOpen] = useState(false);
+    const [openHistory, setOpenHistory] = useState(false);
     const [keys, _] = useKeyContext();
     const [comment, setComment] = useState("");
     const [cArray, setCArray] = useState([]);
 
     const handleDownload = async () => {
-        const snap = await getDoc(doc(db, "locker", auth.currentUser.uid, "owned", sCase.attached));
+        const snap = await getDoc(doc(db, "locker", auth.currentUser.uid, "recieved", sCase.attached));
         const fileData = snap.data();
         const decryptedKey = cryptico.decrypt(fileData.aes, keys.privateKey);
         let aesKey = decryptedKey.plaintext;
@@ -35,6 +40,16 @@ export default function ExistingCase({sCase}) {
         a.remove();
     };
 
+    const fetchHistory = async () => {
+        const history = await getDocs(collection(db,"history",sCase.pId,"cases"));
+
+        let arr = [];
+        history.forEach((d) => {
+            arr.push(d.data());
+        });
+        setHistory(arr);
+    }
+
     useEffect(() => {
         // getDoc(doc(db,"symptosis",sCase.pid))
         //     .then((docSnapshot) => {
@@ -44,21 +59,23 @@ export default function ExistingCase({sCase}) {
         //             });
         //         }
         //     });
+        fetchHistory();
 
         const unsub = onSnapshot(doc(db, "symptosis", sCase.pId),
             (doc) => {
-            if (doc.exists()) {
-                setCArray(doc.data().comments);
-            }
-        });
+                if (doc.exists()) {
+                    setCArray(doc.data().comments);
+                }
+            });
     },[]);
 
     useEffect(() => {
-        const patientAES = cryptico.decrypt(sCase.pKey, keys.privateKey);
-        setPKey(patientAES.plaintext);
+        const docAES = cryptico.decrypt(sCase.dKey, keys.privateKey);
+        setPKey(docAES.plaintext);
 
-        const dDescrition = CryptoJS.AES.decrypt(sCase.description, patientAES.plaintext).toString(CryptoJS.enc.Utf8);
-        const dSymptoms = CryptoJS.AES.decrypt(sCase.symptoms, patientAES.plaintext).toString(CryptoJS.enc.Utf8);
+        const dNumber = cryptico.decrypt(sCase.pNumber, keys.privateKey);
+        const dDescrition = CryptoJS.AES.decrypt(sCase.description, docAES.plaintext).toString(CryptoJS.enc.Utf8);
+        const dSymptoms = CryptoJS.AES.decrypt(sCase.symptoms, docAES.plaintext).toString(CryptoJS.enc.Utf8);
         let symptomArr = dSymptoms.split(",");
         symptomArr = symptomArr.filter(r => r !== "");
         let stringSymptoms = "";
@@ -71,18 +88,19 @@ export default function ExistingCase({sCase}) {
             else if (index !== symptomArr.length - 1)
                 stringSymptoms = stringSymptoms.concat(", ");
         });
-        let dPrediction = CryptoJS.AES.decrypt(sCase.prediction, patientAES.plaintext).toString(CryptoJS.enc.Utf8);
+        let dPrediction = CryptoJS.AES.decrypt(sCase.prediction, docAES.plaintext).toString(CryptoJS.enc.Utf8);
         dPrediction = dPrediction.replaceAll(",", ", ");
 
         setDescription(dDescrition);
         setSymptoms(stringSymptoms);
         setPrediction(dPrediction);
+        setNumber(dNumber.plaintext);
     }, []);
 
     const handleComment = async (e) => {
         e.target.disabled = true;
         let d = cArray;
-        d.push("p_" + comment);
+        d.push("d_" + comment);
         await updateDoc(doc(db, "symptosis", sCase.pId), {
             comments: d,
         });
@@ -93,7 +111,8 @@ export default function ExistingCase({sCase}) {
 
     return (
         <>
-            {open && <CloseCase attachedFile={sCase.attached} setOpen={setOpen} userID={sCase.pId} docID={sCase.dId}/>}
+            {openHistory && <ViewHistory  setOpenHistory={setOpenHistory} history={history} doctorKey={pKey}/>}
+            {open && <Prescribe sCase={sCase} setOpen={setOpen} doctorKey={pKey} setSelectedCase={setSelectedCase}/>}
             <div className={s["case"]}>
                 <div className={s["case-container"]}>
                     <div className={s["case-title"]}>
@@ -106,19 +125,33 @@ export default function ExistingCase({sCase}) {
                             </svg>
                             {sCase.date}
                         </span>
-                            Symptosis Consultation (Dr. {sCase.dName})
+                            {sCase.pName}'s case
                         </p>
-                        <button onClick={() => {
-                            setOpen(true)
-                        }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                <path d="M2 3a1 1 0 00-1 1v1a1 1 0 001 1h16a1 1 0 001-1V4a1 1 0 00-1-1H2z"/>
-                                <path fillRule="evenodd"
-                                      d="M2 7.5h16l-.811 7.71a2 2 0 01-1.99 1.79H4.802a2 2 0 01-1.99-1.79L2 7.5zm5.22 1.72a.75.75 0 011.06 0L10 10.94l1.72-1.72a.75.75 0 111.06 1.06L11.06 12l1.72 1.72a.75.75 0 11-1.06 1.06L10 13.06l-1.72 1.72a.75.75 0 01-1.06-1.06L8.94 12l-1.72-1.72a.75.75 0 010-1.06z"
-                                      clipRule="evenodd"/>
-                            </svg>
-                            CLOSE CASE
-                        </button>
+                        <div>
+                            <button className={s["case-info"]} onClick={() => {
+                                setSelectedCase(undefined)
+                            }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                </svg>
+                            </button>
+                            <button className={s["case-info"]} onClick={() => {
+                                setOpenHistory(true)
+                            }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clipRule="evenodd" />
+                                </svg>
+                                PATIENT HISTORY
+                            </button>
+                            <button className={s["case-close"]} onClick={() => {
+                                setOpen(true)
+                            }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                    <path fillRule="evenodd" d="M8.5 3.528v4.644c0 .729-.29 1.428-.805 1.944l-1.217 1.216a8.75 8.75 0 013.55.621l.502.201a7.25 7.25 0 004.178.365l-2.403-2.403a2.75 2.75 0 01-.805-1.944V3.528a40.205 40.205 0 00-3 0zm4.5.084l.19.015a.75.75 0 10.12-1.495 41.364 41.364 0 00-6.62 0 .75.75 0 00.12 1.495L7 3.612v4.56c0 .331-.132.649-.366.883L2.6 13.09c-1.496 1.496-.817 4.15 1.403 4.475C5.961 17.852 7.963 18 10 18s4.039-.148 5.997-.436c2.22-.325 2.9-2.979 1.403-4.475l-4.034-4.034A1.25 1.25 0 0113 8.172v-4.56z" clipRule="evenodd" />
+                                </svg>
+                                PRESCRIBE
+                            </button>
+                        </div>
                     </div>
                     <div className={s["case-body"]}>
                         <div className={s["case-details"]}>
@@ -159,10 +192,11 @@ export default function ExistingCase({sCase}) {
                                     </svg>
                                 </div>
                                 <div className={s["case-data"]}>
-                                    <label><span>Doctor's Name</span> <p>{sCase.dName}</p></label>
-                                    <label><span>Age</span> <p>{sCase.dAge}</p></label>
-                                    <label><span>Contact Number</span> <p>{sCase.dNumber}</p></label>
-                                    <label><span>Email</span> <p>{sCase.dEmail}</p></label>
+                                    <label><span>Patient's Name</span> <p>{sCase.pName}</p></label>
+                                    <label><span>Gender</span> <p>{sCase.pGender}</p></label>
+                                    <label><span>Age</span> <p>{sCase.pAge}</p></label>
+                                    <label><span>Contact Number</span> <p>{number}</p></label>
+                                    <label><span>Email</span> <p>{sCase.pEmail}</p></label>
                                 </div>
                             </div>
                         </div>
@@ -195,8 +229,7 @@ export default function ExistingCase({sCase}) {
                                                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
                                         </span>
                                         <p>
-                                            Please only consider this as a preliminary analysis and wait for the consulted
-                                            doctor's response.
+                                            The patient has been informed to only consider this as the preliminary analysis and wait for your response.
                                         </p>
                                     </div>
                                 </div>
@@ -205,16 +238,16 @@ export default function ExistingCase({sCase}) {
                                 <div className={s["case-chat-body"]}>
                                     <div className={s["case-chat-title"]}>
                                         <p>
-                                            DR.<span>{sCase.dName}</span>
+                                            Patient <span>{sCase.pName}</span>
                                         </p>
-                                        <span>{sCase.dEmail}</span>
+                                        <span>{sCase.pEmail}</span>
                                     </div>
                                     <div className={s["case-chat-bodyc"]}>
                                         {cArray !== undefined &&
                                             cArray.map((data) => {
                                                 if (data === "")
                                                     return (<></>);
-                                                if (data.substring(0, 2) === "p_")
+                                                if (data.substring(0, 2) === "d_")
                                                     return (
                                                         <div className={s["case-msg-sent"]}>
                                                             <p>{data.slice(2)}</p>

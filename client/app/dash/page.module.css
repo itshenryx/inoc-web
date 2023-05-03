@@ -1777,6 +1777,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 80%;
+}
+
+.case-title > button:hover {
+    opacity: 100%;
 }
 
 .case-title > button > svg {
@@ -1991,6 +1996,7 @@
     left: 0;
     height: 3rem;
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     border-bottom: 2px solid #f1f1f1;
     background-color: white;
@@ -2041,7 +2047,7 @@
 .case-msg-sent {
     display: flex;
     width: 100%;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
 .case-msg-sent > p {
@@ -2058,7 +2064,7 @@
 .case-msg-recieved {
     display: flex;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 
 .case-msg-recieved > p {
@@ -2109,4 +2115,900 @@
 
 .case-chat-input > button > svg {
     width: 1.5rem;
+}
+
+.symptom-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 1.5rem 0rem;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    /*justify-content: center;*/
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.symptom-list {
+    width: 100%;
+    height: 4rem;
+    border: 2px #f1f1f1 solid;
+    /*box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.1);*/
+    border-radius: 1rem;
+    display: flex;
+    padding: 0 1rem;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.symptom-list:hover {
+    border: 2px #cd7776 solid;
+}
+
+.symptom-list > p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.symptom-date {
+    font-family: var(--font-poppins);
+    background-color: #f1f1f1;
+    font-size: .9rem;
+    margin-right: 1rem;
+    font-weight: 400;
+    padding: .3rem 1rem;
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+}
+
+.symptom-patient {
+    display: flex;
+    align-items: center;
+}
+
+.symptom-list > p > p {
+    font-size: .8rem;
+}
+
+.symptom-desc {
+    display: flex;
+    align-items: center;
+    font-size: .9rem;
+    font-weight: 400;
+    margin-left: 1rem;
+    border: 1px solid #cd7776;
+    padding: .3rem 1rem;
+    border-radius: .5rem;
+}
+
+.symptom-severity {
+    color: rgb(var(--clr-gray));
+    font-weight: 500;
+    padding: .2rem 1rem;
+    border-radius: .5rem;
+    background-color: #cd7776;
+    font-size: 1rem;
+}
+
+.symptom-ai {
+    display: flex;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-right: 1rem;
+}
+
+.symptom-ai > svg {
+    width: 1.2rem;
+    margin-right: .5rem;
+}
+
+.case-title > div {
+    display: flex;
+}
+
+.case-info > svg {
+    width: 1.3rem;
+}
+
+.case-close > svg {
+    width: 1.3rem;
+}
+
+.case-info {
+    border: none;
+    font-family: var(--font-poppins);
+    font-weight: 500;
+    letter-spacing: .1rem;
+    padding: .5rem 1rem;
+    background: #f1f1f1;
+    color: rgb(var(--clr-dark-blue));
+    border-radius: .5rem;
+    margin-right: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    align-items: center;
+    opacity: 80%;
+}
+
+.case-info:hover {
+    opacity: 100%;
+}
+
+.case-close {
+    border: none;
+    font-family: var(--font-poppins);
+    font-weight: 500;
+    letter-spacing: .1rem;
+    padding: .5rem 1rem;
+    background: #cd7776;
+    color: rgb(var(--clr-gray));
+    border-radius: .5rem;
+    margin-right: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    align-items: center;
+    opacity: 90%;
+}
+
+.case-close:hover {
+    opacity: 100%;
+}
+
+.prescribe-input {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    border-radius: .5rem;
+    margin-top: 1rem;
+    padding: .5rem;
+    height: 3rem;
+    width: 100%;
+    background-color: #f1f1f1;
+    margin-bottom: 1rem;
+}
+
+.prescribe-input input {
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    display: flex;
+    align-items: center;
+    align-content: center;
+    font-size: 1rem;
+    padding-inline: .5rem;
+    border-radius: .5rem;
+    border: none;
+    background: none;
+    width: 100%;
+    height: 100%;
+}
+
+.prescribe-input input:focus {
+    outline: none;
+}
+
+.prescribe-input:focus-within {
+    outline: none;
+    border: 1px solid rgb(var(--clr-peach));
+}
+
+.prescribe-textarea {
+    background: #f1f1f1;
+    margin-top: 1rem;
+    border-radius: .5rem;
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    display: flex;
+    max-height: 4.1rem;
+    margin-bottom: 1rem;
+}
+
+.prescribe-textarea:focus {
+    border: 1px solid #cd7776;
+    outline: none;
+}
+
+.PrescribeDialongContent {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 85px -30px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 28rem;
+    max-height: 85vh;
+    padding: 1.8rem;
+    z-index: 2;
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.PrescribeDialongContent:focus {
+    outline: none;
+}
+
+.medication-table {
+    border: 2px solid #f1f1f1;
+    border-radius: .5rem;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.medication-title {
+    font-family: var(--font-dmsans);
+    color: #cd7776;
+    display: flex;
+    width: 100%;
+    height: 3rem;
+    align-content: center;
+    align-items: center;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.medication-title > h4 {
+    font-weight: 600;
+    padding: 0 1rem;
+    width: 55%;
+    border-right: 2px solid #f1f1f1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medication-title > p {
+    font-weight: 600;
+    padding: 0 1rem;
+    width: 20%;
+    justify-content: center;
+    border-right: 2px solid #f1f1f1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medication-title > span {
+    font-weight: 600;
+    padding: 0 1rem;
+    width: 25%;
+    justify-content: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medication-item {
+    display: flex;
+    width: 100%;
+    height: 3rem;
+    align-content: center;
+    align-items: center;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.medication-item:last-of-type {
+    border: none;
+}
+
+.medication-item > input {
+    color: rgb(var(--clr-dark-blue));
+    font-family: var(--font-poppins);
+    font-size: 1rem;
+}
+
+.medication-item > input:focus {
+    outline: none;
+    background: #f1f1f1;
+}
+
+.medication-name {
+    border: none;
+    background: none;
+    padding: 0 1rem;
+    font-weight: 400;
+    font-size: 1rem;
+    width: 55%;
+    border-right: 2px solid #f1f1f1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medication-day {
+    border: none;
+    background: none;
+    padding: 0 1rem;
+    font-weight: 400;
+    width: 20%;
+    border-right: 2px solid #f1f1f1;
+    height: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.medication-dosage {
+    border: none;
+    background: none;
+    padding: 0 1rem;
+    font-weight: 400;
+    width: 25%;
+    border-right: 2px solid #f1f1f1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.DosageTrigger {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 25%;
+    font-weight: 400;
+    background: none;
+    border: none;
+    height: 3rem;
+    text-align: center;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    font-size: 1rem;
+    padding: 0 1rem;
+}
+
+.DosageItem {
+    font-weight: 400;
+    font-family: var(--font-poppins);
+    /*font-size: 1.0rem;*/
+    color: rgb(var(--clr-dark-blue));
+    /*text-align: center;*/
+    max-width: 100%;
+    min-width: 100%;
+    padding-block: .3rem;
+    padding-inline: .5rem;
+    user-select: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px #f1f1f1 solid;
+    /*border-bottom: 2px solid #f1f1f1;*/
+}
+
+.DosageItem:last-of-type {
+    border-bottom: none;
+}
+
+.DosageItem[data-highlighted] {
+    border-radius: 0.5rem;
+    background-color: #f1f1f1;
+    /*background-color: rgb(var(--clr-dark-pink));*/
+    /*color: rgb(var(--clr-gray));*/
+}
+
+.DosageButton {
+    width: 2rem;
+    height: 1.5rem;
+    border-radius: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f1f1f1;
+    border: none;
+}
+
+.DosageButton svg {
+    width: 1.2rem;
+}
+
+.prescribeButton {
+    background-color: #cd7776;
+}
+
+.sp-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.sp-left-buttons {
+    margin-right: 1rem;
+    display: flex;
+    gap: .3rem;
+}
+
+.sp-left-buttons button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.sp-left-buttons button > svg {
+    width: 1.8rem;
+    color: rgb(var(--clr-dark-blue));
+}
+
+.SelectLabel {
+    font-size: .9rem;
+    padding: 0 .5rem;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-dark-pink));
+}
+
+.DoctorTrigger {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: .5rem;
+    width: 100%;
+    height: 3rem;
+    text-align: left;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    font-size: 1rem;
+    padding: 0 1rem;
+}
+
+.SeverityTrigger {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: .5rem;
+    height: 3rem;
+    text-align: left;
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    font-size: 1rem;
+    padding: 0 1rem;
+}
+
+.SelectScrollButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    background-color: white;
+    color: rgb(var(--clr-dark-pink));
+    cursor: default;
+}
+
+.SelectScrollButton svg {
+    width: 1rem;
+}
+
+.prescribe-buttons > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding: 0 1rem;
+    font-weight: 500;
+    background-color: #cd7776;
+    border-radius: .5rem;
+    gap: .5rem;
+    /*text-transform: uppercase;*/
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-gray));
+    font-size: 1rem;
+}
+
+.prescribe-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.medicationNote {
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-dmsans);
+    color: #cd7776;
+    font-weight: 500;
+    opacity: 50%;
+    margin-top: .9rem;
+}
+
+.medicationNote > svg {
+    width: 1.2rem;
+    color: #cd7776;
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
+
+.AccordionRoot {
+    border-radius: 1rem;
+    width: 100%;
+}
+
+.AccordionItem {
+    overflow: hidden;
+    border: 2px solid #f1f1f1;
+    border-top: none;
+}
+
+.AccordionItem:first-child {
+    margin-top: 0;
+    border-top: 2px solid #f1f1f1;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.AccordionItem:last-child {
+    border-bottom-left-radius: 1rem;
+    border-top: none;
+    border-bottom-right-radius: 1rem;
+}
+
+.AccordionItem:focus-within {
+    position: relative;
+    z-index: 1;
+}
+
+.AccordionHeader {
+    display: flex;
+}
+
+.AccordionTrigger {
+    border: none;
+    font-family: var(--font-dmsans);
+    color: rgb(var(--clr-dark-blue));
+    background-color: transparent;
+    padding: 0 1.5rem;
+    height: 3.5rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.1rem;
+}
+
+.AccordionTrigger:hover {
+}
+
+.AccordionContent {
+    overflow: hidden;
+    font-size: 1rem;
+    background-color: #f1f1f1;
+}
+
+.AccordionContent[data-state='open'] {
+    animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.AccordionContent[data-state='closed'] {
+    animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.HistoryDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+}
+
+.AccordionChevron {
+    transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.AccordionTrigger[data-state='open'] > .AccordionChevron {
+    transform: rotate(180deg);
+}
+
+@keyframes slideDown {
+    from {
+        height: 0;
+    }
+    to {
+        height: var(--radix-accordion-content-height);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        height: var(--radix-accordion-content-height);
+    }
+    to {
+        height: 0;
+    }
+}
+
+
+.mh-body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mh-container {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.vh-container {
+    width: 100%;
+    height: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+}
+
+.historyTitleLeft {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.historyTitleLeft > p {
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.historyTitleLeft > p > span {
+    color: #cd7776;
+    font-family: var(--font-poppins);
+    margin-right: .3rem;
+    font-weight: 600;
+}
+
+.historyTitleLeft > span {
+    background: #f1f1f1;
+    font-size: 1rem;
+    padding: .2rem 1rem;
+    border-radius: .5rem;
+}
+
+.historyTitleRight {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.historyTitleRight > p {
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.historyTitleRight > p > span {
+    color: #cd7776;
+    font-family: var(--font-poppins);
+    margin-right: .3rem;
+    font-weight: 600;
+}
+
+.historyTitleRight > span {
+    background: #f1f1f1;
+    font-size: 1rem;
+    padding: .2rem 1rem;
+    border-radius: .5rem;
+}
+
+.historyData {
+    width: 100%;
+    display: grid;
+    margin-right: 2rem;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem .5rem;
+    /*align-items: center;*/
+}
+
+.historyData > label {
+    max-width: 13rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+}
+
+.historyData > label > span {
+    width: 100%;
+    font-size: .8rem;
+    color: #cd7776;
+    font-family: var(--font-poppins);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: .1rem;
+}
+
+.historyData > label > p {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+    overflow-wrap: anywhere;
+    font-size: 1.1rem;
+}
+
+.historyMedication {
+    border: 1px solid rgb(var(--clr-dark-blue));
+    border-radius: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100%;
+    background-color: #fff;
+}
+
+.medicationTitle {
+    font-family: var(--font-dmsans);
+    color: #cd7776;
+    display: flex;
+    width: 100%;
+    height: 3rem;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(var(--clr-dark-blue));
+}
+
+.medicationTitle > h4 {
+    font-weight: 600;
+    padding: 0 1rem;
+    width: 55%;
+    border-right: 1px solid rgb(var(--clr-dark-blue));
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medicationTitle > p {
+    font-weight: 600;
+    padding: 0 1rem;
+    width: 20%;
+    justify-content: center;
+    border-right: 1px solid rgb(var(--clr-dark-blue));
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medicationTitle > span {
+    font-weight: 600;
+    padding: 0 1rem;
+    width: 25%;
+    justify-content: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medicationData {
+    font-family: var(--font-poppins);
+    color: rgb(var(--clr-dark-blue));
+    display: flex;
+    width: 100%;
+    height: 3rem;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(var(--clr-dark-blue));
+}
+
+.medicationData:last-of-type {
+    border-bottom: none;
+}
+
+.medicationData > h4 {
+    padding: 0 1rem;
+    font-weight: 400;
+    width: 55%;
+    border-right: 1px solid rgb(var(--clr-dark-blue));
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medicationData > p {
+    padding: 0 1rem;
+    width: 20%;
+    justify-content: center;
+    border-right: 1px solid rgb(var(--clr-dark-blue));
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.medicationData > span {
+    padding: 0 1rem;
+    width: 25%;
+    justify-content: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.HistoryDialogContent {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 85px -30px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 70rem;
+    max-height: 85vh;
+    padding: 1.8rem;
+    z-index: 2;
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.HistoryDialogContent:focus {
+    outline: none;
+}
+
+.pd-history-details {
+    margin: 1.5rem 1.5rem;
+    /*padding: 1rem 1rem;*/
+    border-radius: .4rem;
+    border: 2px solid #f1f1f1;
+}
+
+.homeHistory:last-of-type {
+    border-bottom: none;
+}
+
+.homeHistory {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: .7rem 1rem;
+    border-bottom: 2px solid #f1f1f1;
+    font-size: 1.1rem;
+}
+
+.homeHistory > p > span {
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    text-transform: uppercase;
+    color: #cd7776;
+    font-size: .9rem;
+    margin-right: .5rem;
+}
+
+.homeHistory > p {
+    font-weight: 500;
+}
+
+.homeHistory > span {
+    font-size: .9rem;
+    background-color: #f1f1f1;
+    padding: .3rem .5rem;
+    border-radius: .5rem;
 }

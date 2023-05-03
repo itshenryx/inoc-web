@@ -11,7 +11,7 @@ import CryptoJS from "crypto-js";
 import {useKeyContext} from "@/context/keys";
 import {convertWordArrayToUint8Array} from "@/app/dash/(util)/convertWordArrayToUint8Array";
 
-export default function File({data, fetchData}) {
+export default function File({data}) {
     const [sharing, setSharing] = useState(false);
     const [keys, _] = useKeyContext();
 
@@ -36,7 +36,6 @@ export default function File({data, fetchData}) {
         try {
             await deleteDoc(doc(db,"locker",auth.currentUser.uid, data.shared ? "recieved" : "owned", data.id));
             await deleteDoc(doc(db,"locker",auth.currentUser.uid, "list" , data.selfid));
-            fetchData();
         } catch (e) {
             console.log(e);
         }
@@ -85,7 +84,7 @@ export default function File({data, fetchData}) {
                         </div>
                     </ContextMenu.Item>
                     <ContextMenu.Separator className={s.ContextMenuSeparator}/>
-                    <ContextMenu.Item className={s.ContextMenuItem} onSelect={handleDelete}>
+                    <ContextMenu.Item className={s.ContextMenuItem} disabled={!data.deletable} onSelect={handleDelete}>
                         Delete
                         <div className={s.RightSlot}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8}

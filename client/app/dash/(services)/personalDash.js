@@ -45,7 +45,7 @@ function LockerItems({data}) {
     );
 };
 
-export default function PersonalDash({files, setContent}) {
+export default function PersonalDash({files, history, sCase, setContent}) {
     const [user, _] = useUserContext({});
     const [changeDetails, setChangeDetails] = useState(false);
 
@@ -103,26 +103,39 @@ export default function PersonalDash({files, setContent}) {
                     </div>
                     {
                         user.patient ?
-                    <div className={s["pd-bottom-box"]}>
-                        <div className={s["pd-history"]}>
-                            <div className={s["pd-rbox-title"]}>
-                                <p>
-                                    Medical History
-                                </p>
-                                <button onClick={() => setContent(1)}>
-                                    <span>More details</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8}
-                                         stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                              d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div className={s["pd-symptosis"]}>
-                            <h2>Open Symptosis Case</h2>
-                        </div>
-                    </div> :
+                            <div className={s["pd-bottom-box"]}>
+                                <div className={s["pd-history"]}>
+                                    <div className={s["pd-rbox-title"]}>
+                                        <p>
+                                            Medical History
+                                        </p>
+                                        <button onClick={() => setContent(1)}>
+                                            <span>More details</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 strokeWidth={1.8}
+                                                 stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div className={s["pd-history-details"]}>
+                                        { history !== undefined &&
+                                            history.map((data) => {
+                                                return (
+                                                   <div className={s.homeHistory}>
+                                                        <p><span>Doctor</span>{data.dName}</p>
+                                                        <span>{data.opened}</span>
+                                                   </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                                <div className={s["pd-symptosis"]}>
+                                    <h2>Open Symptosis Case</h2>
+                                </div>
+                            </div> :
                             <div className={s["pd-bottom-box"]}>
                                 <div className={s["pd-history"]}>
                                     <div className={s["pd-rbox-title"]}>
@@ -131,7 +144,8 @@ export default function PersonalDash({files, setContent}) {
                                         </p>
                                         <button onClick={() => setContent(3)}>
                                             <span>Read more</span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 strokeWidth={1.8}
                                                  stroke="currentColor" className="w-6 h-6">
                                                 <path strokeLinecap="round" strokeLinejoin="round"
                                                       d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>

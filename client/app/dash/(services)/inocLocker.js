@@ -5,11 +5,11 @@ import Upload from "@/app/dash/(popups)/upload";
 import {useState} from "react";
 import File from "../(components)/file.js";
 
-export default function InocLocker({files, fetchData}) {
+export default function InocLocker({files}) {
     const [uploader, setUploader] = useState(false);
 
     return (<>
-            {uploader && <Upload uploader={uploader} setUploader={setUploader} fetchData={fetchData}/>}
+            {uploader && <Upload uploader={uploader} setUploader={setUploader}/>}
             <div className={s["il-container"]}>
                 <div className={s["il-header"]}>
                     <p>
@@ -32,7 +32,7 @@ export default function InocLocker({files, fetchData}) {
 
                         </>)
                         : files.map(file => {
-                            return (<File data={file} fetchData={fetchData}/>);
+                            return (<File data={file} />);
                         })
                     }
                 </div>

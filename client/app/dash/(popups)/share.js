@@ -106,6 +106,7 @@ export default function Share({data, sharing, setSharing}) {
                 id: data.id,
                 shared: true,
                 size: file.size,
+                deletable: true,
             });
             setSharing(false);
         } catch (e) {
