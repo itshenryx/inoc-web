@@ -51,7 +51,7 @@ export default function ExistingCase({sCase, fetchSymptosis}) {
                 setCArray(doc.data().comments);
             }
         });
-    });
+    },[]);
 
     useEffect(() => {
         const patientAES = cryptico.decrypt(sCase.pKey, keys.privateKey);
@@ -212,6 +212,8 @@ export default function ExistingCase({sCase, fetchSymptosis}) {
                                     <div className={s["case-chat-bodyc"]}>
                                         {cArray !== undefined &&
                                             cArray.map((data) => {
+                                                if (data === "")
+                                                    return (<></>);
                                                 if (data.substring(0, 2) === "p_")
                                                     return (
                                                         <div className={s["case-msg-sent"]}>
