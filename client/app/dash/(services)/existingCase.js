@@ -36,11 +36,24 @@ export default function ExistingCase({sCase, fetchSymptosis}) {
     };
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "symptosis", sCase.pId), (doc) => {
-            if ( doc !== undefined )
-                setCArray(doc.data().comments);
-        });
+        // getDoc(doc(db,"symptosis",sCase.pid))
+        //     .then((docSnapshot) => {
+        //         if (docSnapshot.exists) {
+        //             onSnapshot(doc(db,"symptosis",sCase.pid), (doc) => {
+        //                 setCArray(doc.data().comments);
+        //             });
+        //         }
+        //     });
 
+        const unsub = onSnapshot(doc(db, "symptosis", sCase.pId),
+            (doc) => {
+            if (doc.exists()) {
+                setCArray(doc.data().comments);
+            }
+        });
+    });
+
+    useEffect(() => {
         const patientAES = cryptico.decrypt(sCase.pKey, keys.privateKey);
         setPKey(patientAES.plaintext);
 
@@ -70,10 +83,10 @@ export default function ExistingCase({sCase, fetchSymptosis}) {
         e.target.disabled = true;
         let d = cArray;
         d.push("p_" + comment);
-        await updateDoc(doc(db,"symptosis",sCase.pId),{
+        await updateDoc(doc(db, "symptosis", sCase.pId), {
             comments: d,
         });
-        e.target.value= "";
+        e.target.value = "";
         setComment("");
         e.target.disabled = false;
     };
@@ -197,9 +210,9 @@ export default function ExistingCase({sCase, fetchSymptosis}) {
                                         <span>{sCase.dEmail}</span>
                                     </div>
                                     <div className={s["case-chat-bodyc"]}>
-                                        { cArray !== undefined &&
+                                        {cArray !== undefined &&
                                             cArray.map((data) => {
-                                                if (data.substring(0,2) === "p_")
+                                                if (data.substring(0, 2) === "p_")
                                                     return (
                                                         <div className={s["case-msg-sent"]}>
                                                             <p>{data.slice(2)}</p>

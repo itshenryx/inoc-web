@@ -286,6 +286,7 @@ export default function NewCase({files,fetchSymptosis}) {
 
                 date: formattedDate,
                 severity: severity,
+                comments: [],
                 attachedName: attached === undefined ? "na" : attached.name,
                 attached: attached === undefined ? "na" : attached.id,
                 description: eDescription,
