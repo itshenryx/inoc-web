@@ -273,9 +273,9 @@ export default function NewCase({files}) {
             // CryptoJS.AES.decrypt(encrypted, "1321231313").toString(CryptoJS.enc.Utf8)
 
             // Prediction from AI
-            const res = await getAIresult(symptoms);
-            const prediction = await res.json();
-            const ePrediction = CryptoJS.AES.encrypt(prediction.toString(), aesKey).toString();
+            // const res = await getAIresult(symptoms);
+            // const prediction = await res.json();
+            const ePrediction = CryptoJS.AES.encrypt("[AI was removed]", aesKey).toString();
 
             await setDoc(doc(db,"history",user.uid), {
                 aesKey: patientKey.cipher,
