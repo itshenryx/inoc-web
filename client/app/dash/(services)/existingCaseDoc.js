@@ -195,7 +195,8 @@ export default function ExistingCaseDoc({sCase, setSelectedCase}) {
                                     <label><span>Patient's Name</span> <p>{sCase.pName}</p></label>
                                     <label><span>Gender</span> <p>{sCase.pGender}</p></label>
                                     <label><span>Age</span> <p>{sCase.pAge}</p></label>
-                                    <label><span>Contact Number</span> <p>{number}</p></label>
+                                    <label><span>Blood Group</span> <p>{sCase.pBlood}</p></label>
+                                    {/*<label><span>Contact Number</span> <p>{number}</p></label>*/}
                                     <label><span>Email</span> <p>{sCase.pEmail}</p></label>
                                 </div>
                             </div>

@@ -111,6 +111,7 @@ export default function Upload({uploader, setUploader}) {
                     id: doc.id,
                     shared: true,
                     size: uploadedFile.size,
+                    deletable: true,
                 });
                 setUploadedFile(undefined);
                 setUploader(false);

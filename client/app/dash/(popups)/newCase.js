@@ -272,6 +272,7 @@ export default function NewCase({files}) {
             //Decryption code
             // CryptoJS.AES.decrypt(encrypted, "1321231313").toString(CryptoJS.enc.Utf8)
 
+
             // Prediction from AI
             // const res = await getAIresult(symptoms);
             // const prediction = await res.json();
