@@ -3,6 +3,27 @@
     /*margin-bottom: 75vh;*/
 }
 
+.loadingBox {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    max-width: 100vw;
+    max-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: #cd7776;
+}
+
+.loadingBox svg {
+    color: #cd7776;
+}
+
+.loading {
+    color: #cd7776;
+}
+
 .landing {
     display: grid;
     justify-content: center;
