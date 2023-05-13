@@ -5,7 +5,7 @@
 
 A security , performance and accessibility focused web-application for an <i>Electronic Health Record (EHR)</i> system, with features such as but not limited to <b>E2EE(end-to-end-encryption)</b>, <b>inocLocker</b> a secure file storage and sharing solution for patients and doctors, <b>Symptosis</b> a consultation panel with a multitude of features.
 
-## Technical and Design Details 
+### Technical and Design Details: 
 
 Made with Next.js 13, React & Firebase (and it's WebSDK), and <a href="https://inoc-web.vercel.app/dash">hosted on Vercel</a>.
 ##### <i> Not built for mobile devices, minimum screen resolution recommended is 1280x720. </i>
