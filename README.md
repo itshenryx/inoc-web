@@ -15,9 +15,7 @@ https://inoc-web.vercel.app/signin
 <br/><br/>
 ![LOGO + color scheme](https://github.com/itshenryx/inoc-web/assets/69627509/2f3222bf-7366-4bdb-ae73-df2d0028a679)
 
-### Credits: 
+### Special Thanks: 
 Thank you so much to [@Khushii Chirath](https://www.behance.net/khushiichirath) for helping me with this project. The whole design was her vision from start to finish. This project wouldn't have been possible without her. 
-Khushii Chirath - Lead UI designer 
-Me - Coding & Development
 
 ###### Please contact me if you want to use this project for personal or commerical use.
