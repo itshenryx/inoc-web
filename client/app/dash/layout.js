@@ -50,13 +50,13 @@ export default function DashLayout({children}) {
                 <UserProvider>
                 <main className={s.main}>
                     {(privateKey !== undefined) && children}
+                    {firstSignIn && <Firstsignin setFirstSignIn={setFirstSignIn} uid={auth.currentUser.uid}/>}
                     {privateKey === undefined && <Key
                         setPrivateKey={setPrivateKey}
                         publicKey={publicKey}
                         uid={auth.currentUser.uid}
                         patient={patient}
                     />}
-                    {firstSignIn && <Firstsignin setFirstSignIn={setFirstSignIn} uid={auth.currentUser.uid}/>}
                 </main>
                 </UserProvider>
             </KeyProvider>
